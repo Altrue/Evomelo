@@ -33,7 +33,7 @@ namespace Evomelo
             Height = GD.WINDOW_HEIGHT;
             ResizeMode = ResizeMode.CanMinimize;
             WindowStyle = WindowStyle.None;
-            Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
+            Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x16, 0x16, 0x16));
             //Icon = new BitmapImage(new Uri("pack://application:,,,/ressources/icon.ico"));
             MouseLeftButtonDown += MainWindow_MouseDown;
 
@@ -45,15 +45,55 @@ namespace Evomelo
             GD.MainCanvas.VerticalAlignment = System.Windows.VerticalAlignment.Top;
 
             // Play button
-            GD.bt_Play.Width = 60;
+            GD.bt_Play.Width = 50;
             GD.bt_Play.Height = 20;
             GD.bt_Play.Background = new SolidColorBrush(Colors.White);
             GD.bt_Play.Foreground = new SolidColorBrush(Colors.Black);
             GD.bt_Play.Click += PlayButton_Click;
-            GD.bt_Play.Content = "Cliquez ici pour jouer !";
+            GD.bt_Play.Content = "Jouer";
             Canvas.SetTop(GD.bt_Play, (5));
-            Canvas.SetRight(GD.bt_Play, (5));
+            Canvas.SetRight(GD.bt_Play, (10));
             GD.MainCanvas.Children.Add(GD.bt_Play);
+
+            // Head Text
+            TextBlock tb_head = new TextBlock();
+            tb_head.Text = "EVOMELO";
+            tb_head.FontFamily = new FontFamily("Arial");
+            tb_head.Foreground = new SolidColorBrush(Colors.Gray);
+            tb_head.FontSize = 16;
+            Canvas.SetTop(tb_head, (15));
+            Canvas.SetLeft(tb_head, (190));
+            GD.MainCanvas.Children.Add(tb_head);
+
+            // Cadres
+            for (int n=0;n<11;n++)
+            {
+                if (n<10) {
+                    GD.borderIndividus[n] = new Border();
+                    GD.borderIndividus[n].Width = GD.WINDOW_WIDTH - 60;
+                    GD.borderIndividus[n].Height = 35;
+                    GD.borderIndividus[n].Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x11, 0x11, 0x11));
+                    GD.borderIndividus[n].BorderThickness = new Thickness(0);
+                    GD.borderIndividus[n].BorderBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
+                    Canvas.SetTop(GD.borderIndividus[n], (50 + (n * 50)));
+                    Canvas.SetLeft(GD.borderIndividus[n], (30));
+                    GD.MainCanvas.Children.Add(GD.borderIndividus[n]);
+                }
+                else
+                {
+                    GD.bt_Generation.Width = GD.WINDOW_WIDTH - 60;
+                    GD.bt_Generation.Height = 35;
+                    GD.bt_Generation.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x33, 0x33, 0x66));
+                    GD.bt_Generation.Foreground = new SolidColorBrush(Colors.White);
+                    GD.bt_Generation.BorderBrush = null;
+                    //GD.bt_Generation.Click += PlayButton_Click;//        <- TODO
+                    GD.bt_Generation.Content = "Nouvelle génération";
+                    Canvas.SetTop(GD.bt_Generation, (50 + (n * 50)));
+                    Canvas.SetLeft(GD.bt_Generation, (30));
+                    GD.MainCanvas.Children.Add(GD.bt_Generation);
+                }
+                
+            }
 
             // Initialisation du lecteur
             mplayer = new MediaPlayer();

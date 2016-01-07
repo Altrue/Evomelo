@@ -33,7 +33,7 @@ namespace Evomelo
         // Constants & Variables
         // - Constants
         public const int WINDOW_WIDTH = 450;
-        public const int WINDOW_HEIGHT = 250;
+        public const int WINDOW_HEIGHT = 600;
         // - Variables
         public static int coreNumber = 0;
 
@@ -45,6 +45,7 @@ namespace Evomelo
 
         // - Buttons
         public static Button bt_Play = new Button();
+        public static Button bt_Generation = new Button();
 
         // Data Storage
         // - Dictionaries
@@ -54,6 +55,6 @@ namespace Evomelo
         public static PerformanceCounter[] pcArrayCPU = new PerformanceCounter[17];
         public static TextBlock[] tbArrayCPU = new TextBlock[32];
         public static Rectangle[] rectCPU = new Rectangle[32];
-        public static Border[] borderCPU = new Border[32];
+        public static Border[] borderIndividus = new Border[10];
     }
 }
