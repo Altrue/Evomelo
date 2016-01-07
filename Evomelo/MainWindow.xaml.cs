@@ -34,6 +34,7 @@ namespace Evomelo
             ResizeMode = ResizeMode.CanMinimize;
             WindowStyle = WindowStyle.None;
             Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
+            Icon = new BitmapImage(new Uri("pack://application:,,,/ressources/icon.ico"));
 
             // Initialisation du lecteur
             mplayer = new MediaPlayer();

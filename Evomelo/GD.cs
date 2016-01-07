@@ -19,7 +19,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Overview
+namespace Evomelo
 {
     // ===============================
     // Global Data class
