@@ -8,6 +8,6 @@ namespace Evomelo.genetique
 {
     class Individu
     {
-
+        private int[] piste = new int[16];
     }
 }

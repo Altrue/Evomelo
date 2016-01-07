@@ -8,6 +8,6 @@ namespace Evomelo.genetique
 {
     class Population
     {
-
+        private Individu[] individus = new Individu[15];
     }
 }
