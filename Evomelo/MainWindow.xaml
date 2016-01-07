@@ -11,6 +11,5 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-
     </Canvas>
 </Window>
