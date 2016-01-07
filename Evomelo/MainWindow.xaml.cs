@@ -34,7 +34,7 @@ namespace Evomelo
             ResizeMode = ResizeMode.CanMinimize;
             WindowStyle = WindowStyle.None;
             Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
-            Icon = new BitmapImage(new Uri("pack://application:,,,/ressources/icon.ico"));
+            //Icon = new BitmapImage(new Uri("pack://application:,,,/ressources/icon.ico"));
             MouseLeftButtonDown += MainWindow_MouseDown;
 
             // Main Canvas Initialization
@@ -49,7 +49,7 @@ namespace Evomelo
             GD.bt_Play.Height = 20;
             GD.bt_Play.Background = new SolidColorBrush(Colors.White);
             GD.bt_Play.Foreground = new SolidColorBrush(Colors.Black);
-            GD.bt_Play.MouseLeftButtonDown += PlayButton_Click;
+            GD.bt_Play.Click += PlayButton_Click;
             GD.bt_Play.Content = "Cliquez ici pour jouer !";
             Canvas.SetTop(GD.bt_Play, (5));
             Canvas.SetRight(GD.bt_Play, (5));
