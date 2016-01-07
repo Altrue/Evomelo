@@ -35,6 +35,7 @@ namespace Evomelo
             WindowStyle = WindowStyle.None;
             Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
             Icon = new BitmapImage(new Uri("pack://application:,,,/ressources/icon.ico"));
+            MouseLeftButtonDown += MainWindow_MouseDown;
 
             // Main Canvas Initialization
             AddChild(GD.MainCanvas);
@@ -155,6 +156,12 @@ namespace Evomelo
             nbFile++;
             isPlaying = true;
             mplayer.Play();
+        }
+
+        // DragMove
+        public void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
     }
 }
