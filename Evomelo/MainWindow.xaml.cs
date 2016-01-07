@@ -28,6 +28,13 @@ namespace Evomelo
         {
             InitializeComponent();
 
+            // Initialisation graphique
+            Width = GD.WINDOW_WIDTH;
+            Height = GD.WINDOW_HEIGHT;
+            ResizeMode = ResizeMode.CanMinimize;
+            WindowStyle = WindowStyle.None;
+            Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
+
             // Initialisation du lecteur
             mplayer = new MediaPlayer();
             mplayer.MediaEnded += mplayer_MediaEnded;
