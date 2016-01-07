@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GenerateurMusique
+namespace Evomelo
 {
     public partial class MainWindow : Window
     {

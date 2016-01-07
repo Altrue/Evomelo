@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GenerateurMusique
+namespace Evomelo
 {
     /// <summary>
     /// VariableLength is a static class providing functionality to write out standard MIDI Variable Length quantities.

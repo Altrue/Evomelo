@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GenerateurMusique
+namespace Evomelo
 {
     /// <summary>
     /// MIDITrack represents one track of a standard MIDISong file. A MIDI track consists of multiple "Events".

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GenerateurMusique
+namespace Evomelo
 {
     /// <summary>
     /// MIDISong represents a standard MIDI Song, consisting of multiple Tracks of notes.
