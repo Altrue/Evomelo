@@ -32,8 +32,8 @@ namespace Evomelo
 
         // Constants & Variables
         // - Constants
-        public const int WINDOW_WIDTH = 300;
-        public const int WINDOW_HEIGHT = 150;
+        public const int WINDOW_WIDTH = 450;
+        public const int WINDOW_HEIGHT = 250;
         // - Variables
         public static int coreNumber = 0;
 
@@ -44,7 +44,7 @@ namespace Evomelo
         // - Brushes
 
         // - Buttons
-        public static Rectangle bt_Exit = new Rectangle();
+        public static Button bt_Play = new Button();
 
         // Data Storage
         // - Dictionaries

@@ -36,6 +36,24 @@ namespace Evomelo
             Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
             Icon = new BitmapImage(new Uri("pack://application:,,,/ressources/icon.ico"));
 
+            // Main Canvas Initialization
+            AddChild(GD.MainCanvas);
+            GD.MainCanvas.Width = GD.WINDOW_WIDTH;
+            GD.MainCanvas.Height = GD.WINDOW_HEIGHT;
+            GD.MainCanvas.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            GD.MainCanvas.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+
+            // Play button
+            GD.bt_Play.Width = 60;
+            GD.bt_Play.Height = 20;
+            GD.bt_Play.Background = new SolidColorBrush(Colors.White);
+            GD.bt_Play.Foreground = new SolidColorBrush(Colors.Black);
+            GD.bt_Play.MouseLeftButtonDown += PlayButton_Click;
+            GD.bt_Play.Content = "Cliquez ici pour jouer !";
+            Canvas.SetTop(GD.bt_Play, (5));
+            Canvas.SetRight(GD.bt_Play, (5));
+            GD.MainCanvas.Children.Add(GD.bt_Play);
+
             // Initialisation du lecteur
             mplayer = new MediaPlayer();
             mplayer.MediaEnded += mplayer_MediaEnded;
@@ -72,7 +90,7 @@ namespace Evomelo
         }
 
         // Clic sur le bouton : on lance la création d'un fichier et on le joue
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void PlayButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             CreateAndPlayMusic();
         }
