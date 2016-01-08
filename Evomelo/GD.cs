@@ -45,7 +45,6 @@ namespace Evomelo
 
         // - Buttons
         public static Rectangle bt_Exit = new Rectangle();
-        public static Rectangle bt_Play = new Rectangle();
         public static Button bt_Generation = new Button();
 
         // Data Storage
@@ -57,5 +56,6 @@ namespace Evomelo
         public static TextBlock[] tbArrayCPU = new TextBlock[32];
         public static Rectangle[] rectPlayIndividus = new Rectangle[10];
         public static Border[] borderIndividus = new Border[10];
+        public static Rectangle[] rectStars = new Rectangle[50];
     }
 }

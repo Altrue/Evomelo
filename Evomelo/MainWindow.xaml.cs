@@ -44,18 +44,6 @@ namespace Evomelo
             GD.MainCanvas.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             GD.MainCanvas.VerticalAlignment = System.Windows.VerticalAlignment.Top;
 
-            // Play button
-            GD.bt_Play.Width = 27;
-            GD.bt_Play.Height = 27;
-            GD.bt_Play.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_play.png")));
-            GD.bt_Play.MouseLeftButtonDown += PlayButton_MouseDown;
-            GD.bt_Play.MouseEnter += Button_MouseEnter;
-            GD.bt_Play.MouseLeave += Button_MouseLeave;
-            GD.bt_Play.Name = "icon_play";
-            Canvas.SetTop(GD.bt_Play, (10));
-            Canvas.SetLeft(GD.bt_Play, (10));
-            GD.MainCanvas.Children.Add(GD.bt_Play);
-
             // Head Text
             TextBlock tb_head = new TextBlock();
             tb_head.Text = "EVOMELO";
@@ -92,7 +80,35 @@ namespace Evomelo
                     Canvas.SetLeft(GD.borderIndividus[n], (30));
                     GD.MainCanvas.Children.Add(GD.borderIndividus[n]);
 
+                    // Play button
+                    GD.rectPlayIndividus[n] = new Rectangle();
+                    GD.rectPlayIndividus[n].Width = 27;
+                    GD.rectPlayIndividus[n].Height = 27;
+                    GD.rectPlayIndividus[n].Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_play.png")));
+                    GD.rectPlayIndividus[n].MouseLeftButtonDown += PlayButton_MouseDown;
+                    GD.rectPlayIndividus[n].MouseEnter += Button_MouseEnter;
+                    GD.rectPlayIndividus[n].MouseLeave += Button_MouseLeave;
+                    GD.rectPlayIndividus[n].Name = "icon_play";
+                    Canvas.SetTop(GD.rectPlayIndividus[n], (54 + (n * 50)));
+                    Canvas.SetRight(GD.rectPlayIndividus[n], (35));
+                    GD.MainCanvas.Children.Add(GD.rectPlayIndividus[n]);
 
+                    // Star buttons
+                    for (int n2 = 0; n2 < 5; n2++)
+                    {
+                        // Star button
+                        GD.rectStars[(n * 5 + n2)] = new Rectangle();
+                        GD.rectStars[(n * 5 + n2)].Width = 27;
+                        GD.rectStars[(n * 5 + n2)].Height = 24;
+                        GD.rectStars[(n * 5 + n2)].Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_star_empty.png")));
+                        //GD.rectStars[(n * 5 + n2)].MouseLeftButtonDown += PlayButton_MouseDown; // <- TODO
+                        GD.rectStars[(n * 5 + n2)].MouseEnter += Button_MouseEnter;
+                        GD.rectStars[(n * 5 + n2)].MouseLeave += Button_MouseLeave;
+                        GD.rectStars[(n * 5 + n2)].Name = "icon_star_empty";
+                        Canvas.SetTop(GD.rectStars[(n * 5 + n2)], (55 + (n * 50)));
+                        Canvas.SetRight(GD.rectStars[(n * 5 + n2)], (80 + (32 * n2)));
+                        GD.MainCanvas.Children.Add(GD.rectStars[(n * 5 + n2)]);
+                    }
                 }
                 else
                 {
@@ -224,6 +240,9 @@ namespace Evomelo
         {
             Application.Current.Shutdown();
         }
+
+        // These methods enable any rectangle bound to these events, to have an hover effect
+        // as long as an appropriate background image exists with "_2.png" added the end of the name.
 
         // Any Rectangle acting as button MouseEnter
         public void Button_MouseEnter(object sender, MouseEventArgs e)
