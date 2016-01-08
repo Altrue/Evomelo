@@ -45,14 +45,15 @@ namespace Evomelo
             GD.MainCanvas.VerticalAlignment = System.Windows.VerticalAlignment.Top;
 
             // Play button
-            GD.bt_Play.Width = 50;
-            GD.bt_Play.Height = 20;
-            GD.bt_Play.Background = new SolidColorBrush(Colors.White);
-            GD.bt_Play.Foreground = new SolidColorBrush(Colors.Black);
-            GD.bt_Play.Click += PlayButton_Click;
-            GD.bt_Play.Content = "Jouer";
-            Canvas.SetTop(GD.bt_Play, (5));
-            Canvas.SetRight(GD.bt_Play, (10));
+            GD.bt_Play.Width = 27;
+            GD.bt_Play.Height = 27;
+            GD.bt_Play.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_play.png")));
+            GD.bt_Play.MouseLeftButtonDown += PlayButton_MouseDown;
+            GD.bt_Play.MouseEnter += Button_MouseEnter;
+            GD.bt_Play.MouseLeave += Button_MouseLeave;
+            GD.bt_Play.Name = "icon_play";
+            Canvas.SetTop(GD.bt_Play, (10));
+            Canvas.SetLeft(GD.bt_Play, (10));
             GD.MainCanvas.Children.Add(GD.bt_Play);
 
             // Head Text
@@ -64,6 +65,18 @@ namespace Evomelo
             Canvas.SetTop(tb_head, (15));
             Canvas.SetLeft(tb_head, (190));
             GD.MainCanvas.Children.Add(tb_head);
+
+            // Exit button
+            GD.bt_Exit.Width = 20;
+            GD.bt_Exit.Height = 20;
+            GD.bt_Exit.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_cross.png")));
+            GD.bt_Exit.Name = "icon_cross";
+            GD.bt_Exit.MouseLeftButtonDown += ExitButton_MouseDown;
+            GD.bt_Exit.MouseEnter += Button_MouseEnter;
+            GD.bt_Exit.MouseLeave += Button_MouseLeave;
+            Canvas.SetTop(GD.bt_Exit, (10));
+            Canvas.SetRight(GD.bt_Exit, (10));
+            GD.MainCanvas.Children.Add(GD.bt_Exit);
 
             // Cadres
             for (int n=0;n<11;n++)
@@ -78,6 +91,8 @@ namespace Evomelo
                     Canvas.SetTop(GD.borderIndividus[n], (50 + (n * 50)));
                     Canvas.SetLeft(GD.borderIndividus[n], (30));
                     GD.MainCanvas.Children.Add(GD.borderIndividus[n]);
+
+
                 }
                 else
                 {
@@ -131,7 +146,7 @@ namespace Evomelo
         }
 
         // Clic sur le bouton : on lance la création d'un fichier et on le joue
-        private void PlayButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void PlayButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
             CreateAndPlayMusic();
         }
@@ -202,6 +217,26 @@ namespace Evomelo
         public void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
+        }
+
+        // Exit
+        public void ExitButton_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        // Any Rectangle acting as button MouseEnter
+        public void Button_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var logoUri = "pack://application:,,,/ressources/" + (sender as Rectangle).Name+"_2.png";
+            (sender as Rectangle).Fill = new ImageBrush(new BitmapImage(new Uri(logoUri)));
+        }
+
+        // Any Rectangle acting as button MouseLeave
+        public void Button_MouseLeave(object sender, MouseEventArgs e)
+        {
+            var logoUri = "pack://application:,,,/ressources/" + (sender as Rectangle).Name + ".png";
+            (sender as Rectangle).Fill = new ImageBrush(new BitmapImage(new Uri(logoUri)));
         }
     }
 }
