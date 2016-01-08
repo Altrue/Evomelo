@@ -34,7 +34,7 @@ namespace Evomelo
             ResizeMode = ResizeMode.CanMinimize;
             WindowStyle = WindowStyle.None;
             Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x16, 0x16, 0x16));
-            //Icon = new BitmapImage(new Uri("pack://application:,,,/ressources/icon.ico"));
+            Icon = new BitmapImage(new Uri("pack://application:,,,/ressources/icon.ico"));
             MouseLeftButtonDown += MainWindow_MouseDown;
 
             // Main Canvas Initialization
@@ -59,7 +59,7 @@ namespace Evomelo
             TextBlock tb_head = new TextBlock();
             tb_head.Text = "EVOMELO";
             tb_head.FontFamily = new FontFamily("Arial");
-            tb_head.Foreground = new SolidColorBrush(Colors.Gray);
+            tb_head.Foreground = new SolidColorBrush(Color.FromArgb(0xFF, 0x99, 0x99, 0x99));
             tb_head.FontSize = 16;
             Canvas.SetTop(tb_head, (15));
             Canvas.SetLeft(tb_head, (190));
