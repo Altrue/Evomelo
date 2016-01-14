@@ -45,14 +45,13 @@ namespace Evomelo
             GD.MainCanvas.VerticalAlignment = System.Windows.VerticalAlignment.Top;
 
             // Head Text
-            TextBlock tb_head = new TextBlock();
-            tb_head.Text = "EVOMELO";
-            tb_head.FontFamily = new FontFamily("Arial");
-            tb_head.Foreground = new SolidColorBrush(Color.FromArgb(0xFF, 0x99, 0x99, 0x99));
-            tb_head.FontSize = 16;
-            Canvas.SetTop(tb_head, (15));
-            Canvas.SetLeft(tb_head, (190));
-            GD.MainCanvas.Children.Add(tb_head);
+            Rectangle rect_head = new Rectangle();
+            rect_head.Width = 390;
+            rect_head.Height = 35;
+            rect_head.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/titre_evomelo.png")));
+            Canvas.SetTop(rect_head, (5));
+            Canvas.SetLeft(rect_head, (30));
+            GD.MainCanvas.Children.Add(rect_head);
 
             // Exit button
             GD.bt_Exit.Width = 20;
@@ -109,6 +108,24 @@ namespace Evomelo
                         Canvas.SetRight(GD.rectStars[(n * 5 + n2)], (80 + (32 * n2)));
                         GD.MainCanvas.Children.Add(GD.rectStars[(n * 5 + n2)]);
                     }
+
+                    // Save button
+                    GD.rectSaveIndividus[n] = new Rectangle();
+                    GD.rectSaveIndividus[n].Width = 25;
+                    GD.rectSaveIndividus[n].Height = 25;
+                    GD.rectSaveIndividus[n].Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_save.png")));
+                    GD.rectSaveIndividus[n].MouseLeftButtonDown += PlayButton_MouseDown;
+                    GD.rectSaveIndividus[n].MouseEnter += Button_MouseEnter;
+                    GD.rectSaveIndividus[n].MouseLeave += Button_MouseLeave;
+                    //GD.rectSaveIndividus[n].MouseLeftButtonDown += SaveButton_MouseDown; // <- TODO
+                    GD.rectSaveIndividus[n].Name = "icon_save";
+                    Canvas.SetTop(GD.rectSaveIndividus[n], (55 + (n * 50)));
+                    Canvas.SetRight(GD.rectSaveIndividus[n], (246));
+                    GD.MainCanvas.Children.Add(GD.rectSaveIndividus[n]);
+
+                    // Here : Generation of each track
+                    // Generation of preview graph
+
                 }
                 else
                 {
