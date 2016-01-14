@@ -100,7 +100,7 @@ namespace Evomelo
                         GD.rectStars[(n * 5 + n2)].Width = 32;
                         GD.rectStars[(n * 5 + n2)].Height = 24;
                         GD.rectStars[(n * 5 + n2)].Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_star_empty.png")));
-                        //GD.rectStars[(n * 5 + n2)].MouseLeftButtonDown += StarButton_MouseDown; // <- TODO
+                        GD.rectStars[(n * 5 + n2)].MouseLeftButtonDown += StarButton_MouseDown;
                         GD.rectStars[(n * 5 + n2)].MouseEnter += Button_MouseEnter;
                         GD.rectStars[(n * 5 + n2)].MouseLeave += Button_MouseLeave;
                         GD.rectStars[(n * 5 + n2)].Name = "icon_star_empty";
@@ -273,10 +273,10 @@ namespace Evomelo
                     int starId = Array.IndexOf(GD.rectStars, sender as Rectangle);
                     int lineNumber = Math.Abs(starId / 5) + 1;
                     
-                    for (int n=(lineNumber)*5 - 5;n<starId; n++)
+                    for (int n = lineNumber * 5 - 5; n<starId; n++)
                     {
-                        var logoUri2 = "pack://application:,,,/ressources/" + (sender as Rectangle).Name + "_2.png";
-                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(logoUri)));
+                        var logoUri2 = "pack://application:,,,/ressources/" + GD.rectStars[n].Name + "_2.png";
+                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(logoUri2)));
                     }
                 }
             }
@@ -295,12 +295,77 @@ namespace Evomelo
                     int starId = Array.IndexOf(GD.rectStars, sender as Rectangle);
                     int lineNumber = Math.Abs(starId / 5) + 1;
 
-                    for (int n = (lineNumber) * 5 - 5; n < starId; n++)
+                    for (int n = lineNumber * 5 - 5; n < starId; n++)
                     {
-                        var logoUri2 = "pack://application:,,,/ressources/" + (sender as Rectangle).Name + ".png";
-                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(logoUri)));
+                        var logoUri2 = "pack://application:,,,/ressources/" + GD.rectStars[n].Name + ".png";
+                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(logoUri2)));
                     }
                 }
+            }
+        }
+
+        // Clic sur le bouton : on note ou dénote
+        private void StarButton_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            toggleStars(Array.IndexOf(GD.rectStars, sender as Rectangle));
+        }
+
+        public void toggleStars(int starId)
+        {
+            int lineNumber = Math.Abs(starId / 5) + 1;
+            var starUri = "pack://application:,,,/ressources/icon_star_empty.png";
+            var starUri2 = "pack://application:,,,/ressources/icon_star_full.png";
+
+            if (GD.rectStars[starId].Name == "icon_star_empty")
+            {
+                for (int n = lineNumber * 5 - 5; n < lineNumber * 5; n++)
+                {
+                    if (n <= starId)
+                    {
+                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(starUri2)));
+                        GD.rectStars[n].Name = "icon_star_full";
+                    }
+                    else
+                    {
+                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(starUri)));
+                        GD.rectStars[n].Name = "icon_star_empty";
+                    }
+                }
+
+            }
+            else if (GD.rectStars[starId].Name == "icon_star_full")
+            {
+                for (int n = lineNumber * 5 - 5; n < lineNumber * 5; n++)
+                {
+                    // Do we want to disable the rating? If we clicked on the 5th star (that is full), or if the next star is empty.
+                    if ((lineNumber * 5 - 1) == starId)
+                    {
+                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(starUri)));
+                        GD.rectStars[n].Name = "icon_star_empty";
+                    }
+                    else if (GD.rectStars[starId + 1].Name == "icon_star_empty") {
+                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(starUri)));
+                        GD.rectStars[n].Name = "icon_star_empty";
+                    }
+                    // Or just lower it?
+                    else
+                    {
+                        if (n <= starId)
+                        {
+                            GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(starUri2)));
+                            GD.rectStars[n].Name = "icon_star_full";
+                        }
+                        else
+                        {
+                            GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(starUri)));
+                            GD.rectStars[n].Name = "icon_star_empty";
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("OUPS! CA N'AURAIT PAS DU ARRIVER.");
             }
         }
     }
