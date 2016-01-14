@@ -112,13 +112,13 @@ namespace Evomelo
                 }
                 else
                 {
-                    GD.bt_Generation.Width = GD.WINDOW_WIDTH - 60;
+                    GD.bt_Generation.Width = 390;
                     GD.bt_Generation.Height = 35;
-                    GD.bt_Generation.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x33, 0x33, 0x66));
-                    GD.bt_Generation.Foreground = new SolidColorBrush(Colors.White);
-                    GD.bt_Generation.BorderBrush = null;
+                    GD.bt_Generation.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/button_generation.png")));
+                    GD.bt_Generation.MouseEnter += Button_MouseEnter;
+                    GD.bt_Generation.MouseLeave += Button_MouseLeave;
+                    GD.bt_Generation.Name = "button_generation";
                     //GD.bt_Generation.Click += PlayButton_Click;//        <- TODO
-                    GD.bt_Generation.Content = "Nouvelle génération";
                     Canvas.SetTop(GD.bt_Generation, (50 + (n * 50)));
                     Canvas.SetLeft(GD.bt_Generation, (30));
                     GD.MainCanvas.Children.Add(GD.bt_Generation);

@@ -45,7 +45,7 @@ namespace Evomelo
 
         // - Buttons
         public static Rectangle bt_Exit = new Rectangle();
-        public static Button bt_Generation = new Button();
+        public static Rectangle bt_Generation = new Rectangle();
 
         // Data Storage
         // - Dictionaries
