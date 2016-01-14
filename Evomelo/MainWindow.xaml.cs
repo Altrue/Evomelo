@@ -79,6 +79,9 @@ namespace Evomelo
                     Canvas.SetLeft(GD.borderIndividus[n], (30));
                     GD.MainCanvas.Children.Add(GD.borderIndividus[n]);
 
+                    // TODO - PREVIEW
+                    drawPreview(32, 52 + (n * 50), n);
+
                     // Play button
                     GD.rectPlayIndividus[n] = new Rectangle();
                     GD.rectPlayIndividus[n].Width = 27;
@@ -347,7 +350,7 @@ namespace Evomelo
                         GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(starUri)));
                         GD.rectStars[n].Name = "icon_star_empty";
                     }
-                    // Or just lower it?
+                    // Or just lower the rating?
                     else
                     {
                         if (n <= starId)
@@ -367,6 +370,25 @@ namespace Evomelo
             {
                 Console.WriteLine("OUPS! CA N'AURAIT PAS DU ARRIVER.");
             }
+        }
+
+        // WORK IN PROGRESS
+        public void drawPreview(int _marginLeft, int _marginTop, int _individuId)
+        {
+            /* Individu unIndividu = TableauIndividus[_individuId];*/
+            
+            var unIndividu = ""; /* A supprimer plus tard*/
+
+            GD.MainCanvas.Children.Remove(GD.canvasPreview[_individuId]);
+            GD.canvasPreview[_individuId] = new Canvas();
+            
+            GD.canvasPreview[_individuId].Width = 140; //TODO
+            GD.canvasPreview[_individuId].Height = 31; //TODO
+            GD.canvasPreview[_individuId].Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
+
+            Canvas.SetTop(GD.canvasPreview[_individuId], (_marginTop));
+            Canvas.SetLeft(GD.canvasPreview[_individuId], (_marginLeft));
+            GD.MainCanvas.Children.Add(GD.canvasPreview[_individuId]);
         }
     }
 }
