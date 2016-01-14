@@ -97,15 +97,15 @@ namespace Evomelo
                     {
                         // Star button
                         GD.rectStars[(n * 5 + n2)] = new Rectangle();
-                        GD.rectStars[(n * 5 + n2)].Width = 27;
+                        GD.rectStars[(n * 5 + n2)].Width = 32;
                         GD.rectStars[(n * 5 + n2)].Height = 24;
                         GD.rectStars[(n * 5 + n2)].Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_star_empty.png")));
-                        //GD.rectStars[(n * 5 + n2)].MouseLeftButtonDown += PlayButton_MouseDown; // <- TODO
+                        //GD.rectStars[(n * 5 + n2)].MouseLeftButtonDown += StarButton_MouseDown; // <- TODO
                         GD.rectStars[(n * 5 + n2)].MouseEnter += Button_MouseEnter;
                         GD.rectStars[(n * 5 + n2)].MouseLeave += Button_MouseLeave;
                         GD.rectStars[(n * 5 + n2)].Name = "icon_star_empty";
                         Canvas.SetTop(GD.rectStars[(n * 5 + n2)], (55 + (n * 50)));
-                        Canvas.SetRight(GD.rectStars[(n * 5 + n2)], (80 + (32 * n2)));
+                        Canvas.SetLeft(GD.rectStars[(n * 5 + n2)], (220 + (32 * n2)));
                         GD.MainCanvas.Children.Add(GD.rectStars[(n * 5 + n2)]);
                     }
 
@@ -125,7 +125,6 @@ namespace Evomelo
 
                     // Here : Generation of each track
                     // Generation of preview graph
-
                 }
                 else
                 {
@@ -266,6 +265,21 @@ namespace Evomelo
         {
             var logoUri = "pack://application:,,,/ressources/" + (sender as Rectangle).Name+"_2.png";
             (sender as Rectangle).Fill = new ImageBrush(new BitmapImage(new Uri(logoUri)));
+
+            if ((sender as Rectangle).Name.Length > 13)
+            {
+                if ((sender as Rectangle).Name.Substring(0,14) == "icon_star_empt" || (sender as Rectangle).Name.Substring(0, 14) == "icon_star_full")
+                {
+                    int starId = Array.IndexOf(GD.rectStars, sender as Rectangle);
+                    int lineNumber = Math.Abs(starId / 5) + 1;
+                    
+                    for (int n=(lineNumber)*5 - 5;n<starId; n++)
+                    {
+                        var logoUri2 = "pack://application:,,,/ressources/" + (sender as Rectangle).Name + "_2.png";
+                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(logoUri)));
+                    }
+                }
+            }
         }
 
         // Any Rectangle acting as button MouseLeave
@@ -273,6 +287,21 @@ namespace Evomelo
         {
             var logoUri = "pack://application:,,,/ressources/" + (sender as Rectangle).Name + ".png";
             (sender as Rectangle).Fill = new ImageBrush(new BitmapImage(new Uri(logoUri)));
+
+            if ((sender as Rectangle).Name.Length > 13)
+            {
+                if ((sender as Rectangle).Name.Substring(0, 14) == "icon_star_empt" || (sender as Rectangle).Name.Substring(0, 14) == "icon_star_full")
+                {
+                    int starId = Array.IndexOf(GD.rectStars, sender as Rectangle);
+                    int lineNumber = Math.Abs(starId / 5) + 1;
+
+                    for (int n = (lineNumber) * 5 - 5; n < starId; n++)
+                    {
+                        var logoUri2 = "pack://application:,,,/ressources/" + (sender as Rectangle).Name + ".png";
+                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(logoUri)));
+                    }
+                }
+            }
         }
     }
 }

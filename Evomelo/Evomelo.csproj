@@ -110,7 +110,7 @@
     <Resource Include="Ressources\icon_save_2.png" />
     <Resource Include="Ressources\icon_star_empty.png" />
     <Resource Include="Ressources\icon_star_empty_2.png" />
-    <Resource Include="Ressources\icon_star_full_1.png" />
+    <Resource Include="Ressources\icon_star_full.png" />
     <Resource Include="Ressources\icon_star_full_2.png" />
   </ItemGroup>
   <ItemGroup>
