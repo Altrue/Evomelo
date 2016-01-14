@@ -59,5 +59,20 @@ namespace Evomelo
         public static Rectangle[] rectStars = new Rectangle[50];
         public static Rectangle[] rectSaveIndividus = new Rectangle[10];
         public static Canvas[] canvasPreview = new Canvas[10];
+
+        // C'est dégeuullaaassseee
+        public static Rectangle[][] rectPreviewArray = new Rectangle [10][]{
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16]
+        };
+
     }
 }

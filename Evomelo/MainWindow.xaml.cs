@@ -382,13 +382,26 @@ namespace Evomelo
             GD.MainCanvas.Children.Remove(GD.canvasPreview[_individuId]);
             GD.canvasPreview[_individuId] = new Canvas();
             
-            GD.canvasPreview[_individuId].Width = 140; //TODO
+            GD.canvasPreview[_individuId].Width = 129; //TODO
             GD.canvasPreview[_individuId].Height = 31; //TODO
             GD.canvasPreview[_individuId].Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
 
             Canvas.SetTop(GD.canvasPreview[_individuId], (_marginTop));
             Canvas.SetLeft(GD.canvasPreview[_individuId], (_marginLeft));
             GD.MainCanvas.Children.Add(GD.canvasPreview[_individuId]);
+
+            for (int n=0; n < 16; n++)
+            {
+                GD.rectPreviewArray[_individuId][n] = new Rectangle();
+
+                GD.rectPreviewArray[_individuId][n].Width = 7;
+                GD.rectPreviewArray[_individuId][n].Height = 31; // TODO HEIGHT DEPENDANT ON NOTE TONE
+                GD.rectPreviewArray[_individuId][n].Fill = new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0x00, 0x00)); // TODO COLOR DEPENDANT ON INSTRUMENT 
+
+                Canvas.SetBottom(GD.rectPreviewArray[_individuId][n], (0));
+                Canvas.SetLeft(GD.rectPreviewArray[_individuId][n], (1 + n*8));
+                GD.canvasPreview[_individuId].Children.Add(GD.rectPreviewArray[_individuId][n]);
+            }
         }
     }
 }
