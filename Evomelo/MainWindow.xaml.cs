@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Evomelo.Genetique;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,14 +20,18 @@ namespace Evomelo
     public partial class MainWindow : Window
     {
 
-        MediaPlayer mplayer;
-        Boolean isPlaying;
-        string strFileName;
-        int nbFile = 0;
+        private MediaPlayer _mplayer;
+        private Boolean _isPlaying;
+        private string _strFileName;
+        private int _nbFile = 0;
+        private Population _population;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            //génération de la première population
+            _population = new Population();
 
             // Initialisation graphique
             Width = GD.WINDOW_WIDTH;
@@ -137,7 +142,7 @@ namespace Evomelo
                     GD.bt_Generation.MouseEnter += Button_MouseEnter;
                     GD.bt_Generation.MouseLeave += Button_MouseLeave;
                     GD.bt_Generation.Name = "button_generation";
-                    //GD.bt_Generation.Click += PlayButton_Click;//        <- TODO
+                    GD.bt_Generation.MouseDown += generationButton_MouseDown;
                     Canvas.SetTop(GD.bt_Generation, (50 + (n * 50)));
                     Canvas.SetLeft(GD.bt_Generation, (30));
                     GD.MainCanvas.Children.Add(GD.bt_Generation);
@@ -146,9 +151,9 @@ namespace Evomelo
             }
 
             // Initialisation du lecteur
-            mplayer = new MediaPlayer();
-            mplayer.MediaEnded += mplayer_MediaEnded;
-            isPlaying = false;
+            _mplayer = new MediaPlayer();
+            _mplayer.MediaEnded += mplayer_MediaEnded;
+            _isPlaying = false;
 
             // On s'abonne à la fermeture du programme pour pouvoir nettoyer le répertoire et les fichiers midi
             this.Closed += MainWindow_Closed;
@@ -158,11 +163,11 @@ namespace Evomelo
         void MainWindow_Closed(object sender, EventArgs e)
         {
             // s'il y a un fichier en cours de lecture on l'arrête 
-            if (isPlaying)
+            if (_isPlaying)
             {
-                mplayer.Stop();
-                mplayer.Close();
-                isPlaying = false;
+                _mplayer.Stop();
+                _mplayer.Close();
+                _isPlaying = false;
             }
             var files = Directory.EnumerateFiles("./", "Fichier*.mid");
             foreach (string file in files)
@@ -175,9 +180,9 @@ namespace Evomelo
         // Lancé lorsque le fichier a fini sa lecture, pour le fermer proprement
         void mplayer_MediaEnded(object sender, EventArgs e)
         {
-            mplayer.Stop();
-            mplayer.Close();
-            isPlaying = false;
+            _mplayer.Stop();
+            _mplayer.Close();
+            _isPlaying = false;
         }
 
         // Clic sur le bouton : on lance la création d'un fichier et on le joue
@@ -186,15 +191,22 @@ namespace Evomelo
             CreateAndPlayMusic();
         }
 
+        // Clic sur le bouton : on génère une nouvelle génération
+        private void generationButton_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //individus est désormais une nouvelle population d'individus
+            _population.newGeneration();
+        }
+
         // Méthode principale
         private void CreateAndPlayMusic()
         {
             // s'il y a un fichier en cours de lecture on l'arrête 
-            if (isPlaying)
+            if (_isPlaying)
             {
-                mplayer.Stop();
-                mplayer.Close();
-                isPlaying = false;
+                _mplayer.Stop();
+                _mplayer.Close();
+                _isPlaying = false;
             }
             // Générateur aléatoire
             Random rand = new Random();
@@ -234,18 +246,18 @@ namespace Evomelo
             }
             ms.Close();
             // et on écrit le fichier
-            strFileName = "Fichier" + nbFile + ".mid";
-            FileStream objWriter = File.Create(strFileName);
+            _strFileName = "Fichier" + _nbFile + ".mid";
+            FileStream objWriter = File.Create(_strFileName);
             objWriter.Write(dst, 0, dst.Length);
             objWriter.Close();
             objWriter.Dispose();
             objWriter = null;
 
             // 2) Jouer un fichier MIDI
-            mplayer.Open(new Uri(strFileName, UriKind.Relative));
-            nbFile++;
-            isPlaying = true;
-            mplayer.Play();
+            _mplayer.Open(new Uri(_strFileName, UriKind.Relative));
+            _nbFile++;
+            _isPlaying = true;
+            _mplayer.Play();
         }
 
         // DragMove

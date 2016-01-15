@@ -19,7 +19,13 @@ namespace Evomelo.Genetique
         public Population()
         {
             _individus = new Individu[_nbIndividu];
-            _tauxCross = 1 / _nbNotes;
+            _tauxMut = 1 / _nbNotes;
+
+            for(int i = 0; i < _nbIndividu; i++)
+            {
+                _individus[i] = new Individu(_nbNotes);
+                _individus[i].generateRandomNotes();
+            }
         }
 
         //pour accéder à la liste depuis l'interface
@@ -27,11 +33,11 @@ namespace Evomelo.Genetique
         {
             get
             {
-                return this._individus;
+                return _individus;
             }
             set
             {
-                this._individus = value;
+                _individus = value;
             }
         }
 
@@ -55,6 +61,15 @@ namespace Evomelo.Genetique
             }
 
             newI.notes = tabNote;
+
+            if(i1.fitness >= i2.fitness)
+            {
+                newI.instrument = i1.instrument;
+            }
+            else
+            {
+                newI.instrument = i2.instrument;
+            }
 
             return newI;
         }

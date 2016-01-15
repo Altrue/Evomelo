@@ -20,15 +20,27 @@ namespace Evomelo.Genetique
             _fitness = 0;
         }
 
+        public int instrument
+        {
+            get
+            {
+                return _instrument;
+            }
+            set
+            {
+                _instrument = value;
+            }
+        }
+
         public int[] notes
         {
             get
             {
-                return this._notes;
+                return _notes;
             }
             set
             {
-                this._notes = value;
+                _notes = value;
             }
         }
 
@@ -37,11 +49,11 @@ namespace Evomelo.Genetique
         {
             get
             {
-                return this._fitness;
+                return _fitness;
             }
             set
             {
-                this._fitness = value;
+                _fitness = value;
             }
         }
 
