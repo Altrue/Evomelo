@@ -102,7 +102,28 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Ressources\" />
+    <Resource Include="Ressources\icon_cross.png" />
+    <Resource Include="Ressources\icon_cross_2.png" />
+    <Resource Include="Ressources\icon_play.png" />
+    <Resource Include="Ressources\icon_play_2.png" />
+    <Resource Include="Ressources\icon_save.png" />
+    <Resource Include="Ressources\icon_save_2.png" />
+    <Resource Include="Ressources\icon_star_empty.png" />
+    <Resource Include="Ressources\icon_star_empty_2.png" />
+    <Resource Include="Ressources\icon_star_full.png" />
+    <Resource Include="Ressources\icon_star_full_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Ressources\icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Ressources\button_generation.png" />
+    <Resource Include="Ressources\button_generation_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Ressources\titre_evomelo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

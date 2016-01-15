@@ -19,7 +19,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Overview
+namespace Evomelo
 {
     // ===============================
     // Global Data class
@@ -32,8 +32,8 @@ namespace Overview
 
         // Constants & Variables
         // - Constants
-        public const int WINDOW_WIDTH = 300;
-        public const int WINDOW_HEIGHT = 150;
+        public const int WINDOW_WIDTH = 450;
+        public const int WINDOW_HEIGHT = 600;
         // - Variables
         public static int coreNumber = 0;
 
@@ -45,6 +45,7 @@ namespace Overview
 
         // - Buttons
         public static Rectangle bt_Exit = new Rectangle();
+        public static Rectangle bt_Generation = new Rectangle();
 
         // Data Storage
         // - Dictionaries
@@ -53,7 +54,25 @@ namespace Overview
         // - Arrays
         public static PerformanceCounter[] pcArrayCPU = new PerformanceCounter[17];
         public static TextBlock[] tbArrayCPU = new TextBlock[32];
-        public static Rectangle[] rectCPU = new Rectangle[32];
-        public static Border[] borderCPU = new Border[32];
+        public static Rectangle[] rectPlayIndividus = new Rectangle[10];
+        public static Border[] borderIndividus = new Border[10];
+        public static Rectangle[] rectStars = new Rectangle[50];
+        public static Rectangle[] rectSaveIndividus = new Rectangle[10];
+        public static Canvas[] canvasPreview = new Canvas[10];
+
+        // C'est dégeuullaaassseee
+        public static Rectangle[][] rectPreviewArray = new Rectangle [10][]{
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16],
+            new Rectangle[16]
+        };
+
     }
 }

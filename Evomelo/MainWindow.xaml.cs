@@ -33,7 +33,117 @@ namespace Evomelo
             Height = GD.WINDOW_HEIGHT;
             ResizeMode = ResizeMode.CanMinimize;
             WindowStyle = WindowStyle.None;
-            Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
+            Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x16, 0x16, 0x16));
+            Icon = new BitmapImage(new Uri("pack://application:,,,/ressources/icon.ico"));
+            MouseLeftButtonDown += MainWindow_MouseDown;
+
+            // Main Canvas Initialization
+            AddChild(GD.MainCanvas);
+            GD.MainCanvas.Width = GD.WINDOW_WIDTH;
+            GD.MainCanvas.Height = GD.WINDOW_HEIGHT;
+            GD.MainCanvas.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            GD.MainCanvas.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+
+            // Head Text
+            Rectangle rect_head = new Rectangle();
+            rect_head.Width = 390;
+            rect_head.Height = 35;
+            rect_head.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/titre_evomelo.png")));
+            Canvas.SetTop(rect_head, (5));
+            Canvas.SetLeft(rect_head, (30));
+            GD.MainCanvas.Children.Add(rect_head);
+
+            // Exit button
+            GD.bt_Exit.Width = 20;
+            GD.bt_Exit.Height = 20;
+            GD.bt_Exit.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_cross.png")));
+            GD.bt_Exit.Name = "icon_cross";
+            GD.bt_Exit.MouseLeftButtonDown += ExitButton_MouseDown;
+            GD.bt_Exit.MouseEnter += Button_MouseEnter;
+            GD.bt_Exit.MouseLeave += Button_MouseLeave;
+            Canvas.SetTop(GD.bt_Exit, (10));
+            Canvas.SetRight(GD.bt_Exit, (10));
+            GD.MainCanvas.Children.Add(GD.bt_Exit);
+
+            // Cadres
+            for (int n=0;n<11;n++)
+            {
+                if (n<10) {
+                    GD.borderIndividus[n] = new Border();
+                    GD.borderIndividus[n].Width = GD.WINDOW_WIDTH - 60;
+                    GD.borderIndividus[n].Height = 35;
+                    GD.borderIndividus[n].Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x11, 0x11, 0x11));
+                    GD.borderIndividus[n].BorderThickness = new Thickness(0);
+                    GD.borderIndividus[n].BorderBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
+                    Canvas.SetTop(GD.borderIndividus[n], (50 + (n * 50)));
+                    Canvas.SetLeft(GD.borderIndividus[n], (30));
+                    GD.MainCanvas.Children.Add(GD.borderIndividus[n]);
+
+                    // TODO - PREVIEW
+                    drawPreview(32, 52 + (n * 50), n);
+
+                    // Play button
+                    GD.rectPlayIndividus[n] = new Rectangle();
+                    GD.rectPlayIndividus[n].Width = 27;
+                    GD.rectPlayIndividus[n].Height = 27;
+                    GD.rectPlayIndividus[n].Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_play.png")));
+                    GD.rectPlayIndividus[n].MouseLeftButtonDown += PlayButton_MouseDown;
+                    GD.rectPlayIndividus[n].MouseEnter += Button_MouseEnter;
+                    GD.rectPlayIndividus[n].MouseLeave += Button_MouseLeave;
+                    GD.rectPlayIndividus[n].Name = "icon_play";
+                    Canvas.SetTop(GD.rectPlayIndividus[n], (54 + (n * 50)));
+                    Canvas.SetRight(GD.rectPlayIndividus[n], (35));
+                    GD.MainCanvas.Children.Add(GD.rectPlayIndividus[n]);
+
+                    // Star buttons
+                    for (int n2 = 0; n2 < 5; n2++)
+                    {
+                        // Star button
+                        GD.rectStars[(n * 5 + n2)] = new Rectangle();
+                        GD.rectStars[(n * 5 + n2)].Width = 32;
+                        GD.rectStars[(n * 5 + n2)].Height = 24;
+                        GD.rectStars[(n * 5 + n2)].Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_star_empty.png")));
+                        GD.rectStars[(n * 5 + n2)].MouseLeftButtonDown += StarButton_MouseDown;
+                        GD.rectStars[(n * 5 + n2)].MouseEnter += Button_MouseEnter;
+                        GD.rectStars[(n * 5 + n2)].MouseLeave += Button_MouseLeave;
+                        GD.rectStars[(n * 5 + n2)].Name = "icon_star_empty";
+                        Canvas.SetTop(GD.rectStars[(n * 5 + n2)], (55 + (n * 50)));
+                        Canvas.SetLeft(GD.rectStars[(n * 5 + n2)], (220 + (32 * n2)));
+                        GD.MainCanvas.Children.Add(GD.rectStars[(n * 5 + n2)]);
+                    }
+
+                    // Save button
+                    GD.rectSaveIndividus[n] = new Rectangle();
+                    GD.rectSaveIndividus[n].Width = 25;
+                    GD.rectSaveIndividus[n].Height = 25;
+                    GD.rectSaveIndividus[n].Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_save.png")));
+                    GD.rectSaveIndividus[n].MouseLeftButtonDown += PlayButton_MouseDown;
+                    GD.rectSaveIndividus[n].MouseEnter += Button_MouseEnter;
+                    GD.rectSaveIndividus[n].MouseLeave += Button_MouseLeave;
+                    //GD.rectSaveIndividus[n].MouseLeftButtonDown += SaveButton_MouseDown; // <- TODO
+                    GD.rectSaveIndividus[n].Name = "icon_save";
+                    Canvas.SetTop(GD.rectSaveIndividus[n], (55 + (n * 50)));
+                    Canvas.SetRight(GD.rectSaveIndividus[n], (246));
+                    GD.MainCanvas.Children.Add(GD.rectSaveIndividus[n]);
+
+                    // Here : Generation of each track
+                    // Generation of preview graph
+                }
+                else
+                {
+                    GD.bt_Generation.Width = 390;
+                    GD.bt_Generation.Height = 35;
+                    GD.bt_Generation.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/button_generation.png")));
+                    GD.bt_Generation.MouseEnter += Button_MouseEnter;
+                    GD.bt_Generation.MouseLeave += Button_MouseLeave;
+                    GD.bt_Generation.Name = "button_generation";
+                    //GD.bt_Generation.Click += PlayButton_Click;//        <- TODO
+                    Canvas.SetTop(GD.bt_Generation, (50 + (n * 50)));
+                    Canvas.SetLeft(GD.bt_Generation, (30));
+                    GD.MainCanvas.Children.Add(GD.bt_Generation);
+                }
+                
+            }
 
             // Initialisation du lecteur
             mplayer = new MediaPlayer();
@@ -71,7 +181,7 @@ namespace Evomelo
         }
 
         // Clic sur le bouton : on lance la création d'un fichier et on le joue
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void PlayButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
             CreateAndPlayMusic();
         }
@@ -136,6 +246,162 @@ namespace Evomelo
             nbFile++;
             isPlaying = true;
             mplayer.Play();
+        }
+
+        // DragMove
+        public void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
+        // Exit
+        public void ExitButton_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        // These methods enable any rectangle bound to these events, to have an hover effect
+        // as long as an appropriate background image exists with "_2.png" added the end of the name.
+
+        // Any Rectangle acting as button MouseEnter
+        public void Button_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var logoUri = "pack://application:,,,/ressources/" + (sender as Rectangle).Name+"_2.png";
+            (sender as Rectangle).Fill = new ImageBrush(new BitmapImage(new Uri(logoUri)));
+
+            if ((sender as Rectangle).Name.Length > 13)
+            {
+                if ((sender as Rectangle).Name.Substring(0,14) == "icon_star_empt" || (sender as Rectangle).Name.Substring(0, 14) == "icon_star_full")
+                {
+                    int starId = Array.IndexOf(GD.rectStars, sender as Rectangle);
+                    int lineNumber = Math.Abs(starId / 5) + 1;
+                    
+                    for (int n = lineNumber * 5 - 5; n<starId; n++)
+                    {
+                        var logoUri2 = "pack://application:,,,/ressources/" + GD.rectStars[n].Name + "_2.png";
+                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(logoUri2)));
+                    }
+                }
+            }
+        }
+
+        // Any Rectangle acting as button MouseLeave
+        public void Button_MouseLeave(object sender, MouseEventArgs e)
+        {
+            var logoUri = "pack://application:,,,/ressources/" + (sender as Rectangle).Name + ".png";
+            (sender as Rectangle).Fill = new ImageBrush(new BitmapImage(new Uri(logoUri)));
+
+            if ((sender as Rectangle).Name.Length > 13)
+            {
+                if ((sender as Rectangle).Name.Substring(0, 14) == "icon_star_empt" || (sender as Rectangle).Name.Substring(0, 14) == "icon_star_full")
+                {
+                    int starId = Array.IndexOf(GD.rectStars, sender as Rectangle);
+                    int lineNumber = Math.Abs(starId / 5) + 1;
+
+                    for (int n = lineNumber * 5 - 5; n < starId; n++)
+                    {
+                        var logoUri2 = "pack://application:,,,/ressources/" + GD.rectStars[n].Name + ".png";
+                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(logoUri2)));
+                    }
+                }
+            }
+        }
+
+        // Clic sur le bouton : on note ou dénote
+        private void StarButton_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            toggleStars(Array.IndexOf(GD.rectStars, sender as Rectangle));
+        }
+
+        public void toggleStars(int starId)
+        {
+            int lineNumber = Math.Abs(starId / 5) + 1;
+            var starUri = "pack://application:,,,/ressources/icon_star_empty.png";
+            var starUri2 = "pack://application:,,,/ressources/icon_star_full.png";
+
+            if (GD.rectStars[starId].Name == "icon_star_empty")
+            {
+                for (int n = lineNumber * 5 - 5; n < lineNumber * 5; n++)
+                {
+                    if (n <= starId)
+                    {
+                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(starUri2)));
+                        GD.rectStars[n].Name = "icon_star_full";
+                    }
+                    else
+                    {
+                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(starUri)));
+                        GD.rectStars[n].Name = "icon_star_empty";
+                    }
+                }
+
+            }
+            else if (GD.rectStars[starId].Name == "icon_star_full")
+            {
+                for (int n = lineNumber * 5 - 5; n < lineNumber * 5; n++)
+                {
+                    // Do we want to disable the rating? If we clicked on the 5th star (that is full), or if the next star is empty.
+                    if ((lineNumber * 5 - 1) == starId)
+                    {
+                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(starUri)));
+                        GD.rectStars[n].Name = "icon_star_empty";
+                    }
+                    else if (GD.rectStars[starId + 1].Name == "icon_star_empty") {
+                        GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(starUri)));
+                        GD.rectStars[n].Name = "icon_star_empty";
+                    }
+                    // Or just lower the rating?
+                    else
+                    {
+                        if (n <= starId)
+                        {
+                            GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(starUri2)));
+                            GD.rectStars[n].Name = "icon_star_full";
+                        }
+                        else
+                        {
+                            GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(starUri)));
+                            GD.rectStars[n].Name = "icon_star_empty";
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("OUPS! CA N'AURAIT PAS DU ARRIVER.");
+            }
+        }
+
+        // WORK IN PROGRESS
+        public void drawPreview(int _marginLeft, int _marginTop, int _individuId)
+        {
+            /* Individu unIndividu = TableauIndividus[_individuId];*/
+            
+            var unIndividu = ""; /* A supprimer plus tard*/
+
+            GD.MainCanvas.Children.Remove(GD.canvasPreview[_individuId]);
+            GD.canvasPreview[_individuId] = new Canvas();
+            
+            GD.canvasPreview[_individuId].Width = 129; //TODO
+            GD.canvasPreview[_individuId].Height = 31; //TODO
+            GD.canvasPreview[_individuId].Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
+
+            Canvas.SetTop(GD.canvasPreview[_individuId], (_marginTop));
+            Canvas.SetLeft(GD.canvasPreview[_individuId], (_marginLeft));
+            GD.MainCanvas.Children.Add(GD.canvasPreview[_individuId]);
+
+            for (int n=0; n < 16; n++)
+            {
+                GD.rectPreviewArray[_individuId][n] = new Rectangle();
+
+                GD.rectPreviewArray[_individuId][n].Width = 7;
+                GD.rectPreviewArray[_individuId][n].Height = 31; // TODO HEIGHT DEPENDANT ON NOTE TONE
+                GD.rectPreviewArray[_individuId][n].Fill = new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0x00, 0x00)); // TODO COLOR DEPENDANT ON INSTRUMENT 
+
+                Canvas.SetBottom(GD.rectPreviewArray[_individuId][n], (0));
+                Canvas.SetLeft(GD.rectPreviewArray[_individuId][n], (1 + n*8));
+                GD.canvasPreview[_individuId].Children.Add(GD.rectPreviewArray[_individuId][n]);
+            }
         }
     }
 }
