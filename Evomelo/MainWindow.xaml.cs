@@ -194,8 +194,27 @@ namespace Evomelo
         // Clic sur le bouton : on génère une nouvelle génération
         private void generationButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //individus est désormais une nouvelle population d'individus
-            _population.newGeneration();
+            bool fit = true;
+            for(int i = 0; i < _population.individus.Length; i++)
+            {
+                if(_population.individus[i].fitness == 0)
+                {
+                    fit = false;
+                    break;
+                }
+            }
+            //si tout les individus ont une fitness
+            if(fit == true)
+            {
+                //individus est désormais une nouvelle population d'individus
+                _population.newGeneration();
+
+                //TODO : actualiser l'affichage avec les nouveaux individus
+            }
+            else
+            {
+                //TODO : afficher un message annonçant que toutes les "musique" doivent être notée
+            }
         }
 
         // Méthode principale
