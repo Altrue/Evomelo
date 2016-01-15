@@ -79,18 +79,18 @@ namespace Evomelo.Genetique
         {
             int p1 = new Random().Next(0, 10);
             int p2 = new Random().Next(0, 10);
-            Individu i;
+            Individu individu;
 
             if(_individus[p1].fitness <= _individus[p2].fitness)
             {
-                i = _individus[p2];
+                individu = _individus[p2];
             }
             else
             {
-                i = _individus[p1];
+                individu = _individus[p1];
             }
 
-            return i;
+            return individu;
         }
 
         //génère une nouvelle génération
