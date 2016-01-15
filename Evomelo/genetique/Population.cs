@@ -20,11 +20,12 @@ namespace Evomelo.Genetique
         {
             _individus = new Individu[_nbIndividu];
             _tauxMut = 1 / _nbNotes;
+           Random rnd = new Random();
 
             for(int i = 0; i < _nbIndividu; i++)
             {
-                _individus[i] = new Individu(_nbNotes);
-                _individus[i].generateRandomNotes();
+                _individus[i] = new Individu(_nbNotes, rnd.Next(1,129));
+                _individus[i].generateRandomNotes(rnd);
             }
         }
 

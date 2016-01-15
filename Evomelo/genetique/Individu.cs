@@ -13,10 +13,10 @@ namespace Evomelo.Genetique
         private int _instrument;
 
         //initialisation
-        public Individu(int nbNotes)
+        public Individu(int nbNotes, int rndInstrument = 0)
         {
             _notes = new int[nbNotes];
-            _instrument = new Random().Next(1, 128);
+            _instrument = rndInstrument;
             _fitness = 0;
         }
 
@@ -58,11 +58,11 @@ namespace Evomelo.Genetique
         }
 
         //génère une piste de façon aléatoire
-        public void generateRandomNotes()
+        public void generateRandomNotes(Random rnd)
         {
             for(int i = 0; i < _notes.Length; i++)
             {
-                _notes[i] = new Random().Next(0, 127);
+                _notes[i] = rnd.Next(0, 128);
             }
         }
     }

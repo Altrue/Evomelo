@@ -25,7 +25,7 @@ namespace Evomelo
         private string _strFileName;
         private int _nbFile = 0;
         private Population _population;
-
+        public Random testRand = new Random(); // A BOUGER
         public MainWindow()
         {
             InitializeComponent();
@@ -406,16 +406,41 @@ namespace Evomelo
         // WORK IN PROGRESS
         public void drawPreview(int _marginLeft, int _marginTop, int _individuId)
         {
-            /* Individu unIndividu = TableauIndividus[_individuId];*/
-            
-            var unIndividu = ""; /* A supprimer plus tard*/
+            Individu unIndividu = _population.individus[_individuId];
+
+            // Determines color 1 - 128
+
+            int doubleInstrument = unIndividu.instrument * 2;
+            //int doubleInstrument = _individuId * 28; // pour tester la palette de couleurs
+
+            int valueRed = Math.Max(255 - doubleInstrument * 2, 0);
+            int valueGreen = (127 - Math.Abs(doubleInstrument - 127)) * 2;
+            int valueBlue = Math.Max(doubleInstrument - 127, 0) * 2;
+
+            string valueRedHex = valueRed.ToString("X");
+            if (valueRedHex.Length == 1)
+            {
+                valueRedHex = "0" + valueRedHex;
+            }
+            string valueGreenHex = valueGreen.ToString("X");
+            if (valueGreenHex.Length == 1)
+            {
+                valueGreenHex = "0" + valueGreenHex;
+            }
+            string valueBlueHex = valueBlue.ToString("X");
+            if (valueBlueHex.Length == 1)
+            {
+                valueBlueHex = "0" + valueBlueHex;
+            }
+
+            var converter = new System.Windows.Media.BrushConverter();
 
             GD.MainCanvas.Children.Remove(GD.canvasPreview[_individuId]);
             GD.canvasPreview[_individuId] = new Canvas();
             
-            GD.canvasPreview[_individuId].Width = 129; //TODO
-            GD.canvasPreview[_individuId].Height = 31; //TODO
-            GD.canvasPreview[_individuId].Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
+            GD.canvasPreview[_individuId].Width = 129;
+            GD.canvasPreview[_individuId].Height = 31;
+            GD.canvasPreview[_individuId].Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x11, 0x11, 0x11));
 
             Canvas.SetTop(GD.canvasPreview[_individuId], (_marginTop));
             Canvas.SetLeft(GD.canvasPreview[_individuId], (_marginLeft));
@@ -426,8 +451,8 @@ namespace Evomelo
                 GD.rectPreviewArray[_individuId][n] = new Rectangle();
 
                 GD.rectPreviewArray[_individuId][n].Width = 7;
-                GD.rectPreviewArray[_individuId][n].Height = 31; // TODO HEIGHT DEPENDANT ON NOTE TONE
-                GD.rectPreviewArray[_individuId][n].Fill = new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0x00, 0x00)); // TODO COLOR DEPENDANT ON INSTRUMENT 
+                GD.rectPreviewArray[_individuId][n].Height = 31 * ((double)unIndividu.notes[n]/127); // HEIGHT DEPENDANT ON NOTE TONE
+                GD.rectPreviewArray[_individuId][n].Fill = (Brush)converter.ConvertFromString("#FF" + valueRedHex + valueGreenHex + valueBlueHex);
 
                 Canvas.SetBottom(GD.rectPreviewArray[_individuId][n], (0));
                 Canvas.SetLeft(GD.rectPreviewArray[_individuId][n], (1 + n*8));
