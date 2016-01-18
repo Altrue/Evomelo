@@ -195,7 +195,7 @@ namespace Evomelo
         private void generationButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
             bool fit = true;
-            for(int i = 0; i < _population.individus.Length; i++)
+            for(int i = 0; i < 10; i++)
             {
                 if(_population.individus[i].fitness == 0)
                 {
@@ -206,6 +206,9 @@ namespace Evomelo
             //si tout les individus ont une fitness
             if(fit == true)
             {
+
+                Console.WriteLine("--- DEBUT NEW GENERATION ---");
+
                 var starUri = "pack://application:,,,/ressources/icon_star_empty.png";
 
                 // Erase the rating
@@ -221,6 +224,18 @@ namespace Evomelo
                 for (int n = 0; n < 10; n++)
                 {
                     drawPreview(n);
+                    _population.individus[n].fitness = 0;
+                    Console.WriteLine("Individu " + n + ", noté " + _population.individus[n].fitness);
+                }
+
+                GD.bt_Generation.Name = "button_generation_err";
+                GD.bt_Generation.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/button_generation_err.png")));
+
+                Console.WriteLine("--- FIN NEW GENERATION ---");
+
+                for (int n = 0; n < 10; n++)
+                {
+                    Console.WriteLine("Individu " + n + ", noté " + _population.individus[n].fitness);
                 }
             }
             else
@@ -354,53 +369,39 @@ namespace Evomelo
         private void StarButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
             toggleStars(Array.IndexOf(GD.rectStars, sender as Rectangle));
-
-            // Modification possible de l'apparence du boutton generation
-            bool fit = true;
-            for (int i = 0; i < _population.individus.Length; i++)
-            {
-                if (_population.individus[i].fitness == 0)
-                {
-                    fit = false;
-                    break;
-                }
-            }
-
-            if (fit == true)
-            {
-                GD.bt_Generation.Name = "button_generation";
-                GD.bt_Generation.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/button_generation.png")));
-            }
-            else
-            {
-                GD.bt_Generation.Name = "button_generation_err";
-                GD.bt_Generation.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/button_generation_err.png")));
-            }
         }
 
         public void toggleStars(int starId)
         {
-            int lineNumber = Math.Abs(starId / 5) + 1;
+            int lineNumber = Math.Abs(starId / 5);
+
             var starUri = "pack://application:,,,/ressources/icon_star_empty.png";
             var starUri2 = "pack://application:,,,/ressources/icon_star_full.png";
+            int fitnessDemande = starId - (lineNumber * 5 - 1);
 
 
             // Data Side of Things
-            if (_population.individus[lineNumber - 1].fitness == (starId - (lineNumber - 1) * 5) + 1)
+            if (_population.individus[lineNumber].fitness == fitnessDemande)
             {
-                _population.individus[lineNumber - 1].fitness = 0; // Disabling rating
+                Console.WriteLine("Mise à 0. Individu détecté  à : " + _population.individus[lineNumber].fitness + ", note demandée à : " + fitnessDemande);
+                _population.individus[lineNumber].fitness = 0; // Disabling rating
             }
             else
             {
-                _population.individus[lineNumber - 1].fitness = (starId - (lineNumber - 1) * 5) + 1; // Notes de 1 à 5. 0 = pas assigné
+                _population.individus[lineNumber].fitness = fitnessDemande; // Notes de 1 à 5. 0 = pas assigné
             }
 
-            Console.WriteLine(_population.individus[lineNumber - 1].fitness);
+            for (int n = 0; n < 10; n++)
+            {
+                Console.WriteLine("Individu " + n + ", noté " + _population.individus[n].fitness);
+            }
+            Console.WriteLine("---");
+            //Console.WriteLine("Individu " + (lineNumber) + ", noté " + _population.individus[lineNumber].fitness);
 
             // Visual Side of Things
             if (GD.rectStars[starId].Name == "icon_star_empty")
             {
-                for (int n = lineNumber * 5 - 5; n < lineNumber * 5; n++)
+                for (int n = lineNumber * 5; n < lineNumber * 5 + 5; n++)
                 {
                     if (n <= starId)
                     {
@@ -416,10 +417,10 @@ namespace Evomelo
             }
             else if (GD.rectStars[starId].Name == "icon_star_full")
             {
-                for (int n = lineNumber * 5 - 5; n < lineNumber * 5; n++)
+                for (int n = lineNumber * 5; n < lineNumber * 5 + 5; n++)
                 {
                     // Do we want to disable the rating? If we clicked on the 5th star (that is full), or if the next star is empty.
-                    if ((lineNumber * 5 - 1) == starId)
+                    if ((lineNumber * 5) == starId)
                     {
                         GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(starUri)));
                         GD.rectStars[n].Name = "icon_star_empty";
@@ -448,6 +449,28 @@ namespace Evomelo
             {
                 Console.WriteLine("OUPS! CA N'AURAIT PAS DU ARRIVER.");
             }
+
+            // Modification possible de l'apparence du boutton generation
+            bool fit = true;
+            for (int i = 0; i < 10; i++)
+            {
+                if (_population.individus[i].fitness == 0)
+                {
+                    fit = false;
+                    break;
+                }
+            }
+
+            if (fit == true)
+            {
+                GD.bt_Generation.Name = "button_generation";
+                GD.bt_Generation.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/button_generation.png")));
+            }
+            else
+            {
+                GD.bt_Generation.Name = "button_generation_err";
+                GD.bt_Generation.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/button_generation_err.png")));
+            }
         }
 
         // WORK IN PROGRESS
@@ -460,10 +483,10 @@ namespace Evomelo
 
             // Determines color 1 - 128
 
-            int doubleInstrument = unIndividu.instrument * 2;
+            int doubleInstrument = (unIndividu.instrument - 1) * 2;
             //int doubleInstrument = _individuId * 28; // pour tester la palette de couleurs
 
-            int valueRed = Math.Max(255 - doubleInstrument * 2, 0);
+            int valueRed = Math.Max(254 - doubleInstrument * 2, 0);
             int valueGreen = (127 - Math.Abs(doubleInstrument - 127)) * 2;
             int valueBlue = Math.Max(doubleInstrument - 127, 0) * 2;
 
