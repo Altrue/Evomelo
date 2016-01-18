@@ -84,8 +84,8 @@ namespace Evomelo
                     Canvas.SetLeft(GD.borderIndividus[n], (30));
                     GD.MainCanvas.Children.Add(GD.borderIndividus[n]);
 
-                    // TODO - PREVIEW
-                    drawPreview(32, 52 + (n * 50), n);
+                    // Draw Preview
+                    drawPreview(n);
 
                     // Play button
                     GD.rectPlayIndividus[n] = new Rectangle();
@@ -138,10 +138,10 @@ namespace Evomelo
                 {
                     GD.bt_Generation.Width = 390;
                     GD.bt_Generation.Height = 35;
-                    GD.bt_Generation.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/button_generation.png")));
+                    GD.bt_Generation.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/button_generation_err.png")));
                     GD.bt_Generation.MouseEnter += Button_MouseEnter;
                     GD.bt_Generation.MouseLeave += Button_MouseLeave;
-                    GD.bt_Generation.Name = "button_generation";
+                    GD.bt_Generation.Name = "button_generation_err";
                     GD.bt_Generation.MouseDown += generationButton_MouseDown;
                     Canvas.SetTop(GD.bt_Generation, (50 + (n * 50)));
                     Canvas.SetLeft(GD.bt_Generation, (30));
@@ -206,14 +206,26 @@ namespace Evomelo
             //si tout les individus ont une fitness
             if(fit == true)
             {
+                var starUri = "pack://application:,,,/ressources/icon_star_empty.png";
+
+                // Erase the rating
+                for (int s = 0; s < 50; s++)
+                {
+                    GD.rectStars[s].Fill = new ImageBrush(new BitmapImage(new Uri(starUri)));
+                    GD.rectStars[s].Name = "icon_star_empty";
+                }
+
                 //individus est désormais une nouvelle population d'individus
                 _population.newGeneration();
 
-                //TODO : actualiser l'affichage avec les nouveaux individus
+                for (int n = 0; n < 10; n++)
+                {
+                    drawPreview(n);
+                }
             }
             else
             {
-                //TODO : afficher un message annonçant que toutes les "musique" doivent être notée
+                Console.WriteLine("Clic enregistré mais il ne fait rien !");
             }
         }
 
@@ -342,6 +354,28 @@ namespace Evomelo
         private void StarButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
             toggleStars(Array.IndexOf(GD.rectStars, sender as Rectangle));
+
+            // Modification possible de l'apparence du boutton generation
+            bool fit = true;
+            for (int i = 0; i < _population.individus.Length; i++)
+            {
+                if (_population.individus[i].fitness == 0)
+                {
+                    fit = false;
+                    break;
+                }
+            }
+
+            if (fit == true)
+            {
+                GD.bt_Generation.Name = "button_generation";
+                GD.bt_Generation.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/button_generation.png")));
+            }
+            else
+            {
+                GD.bt_Generation.Name = "button_generation_err";
+                GD.bt_Generation.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/button_generation_err.png")));
+            }
         }
 
         public void toggleStars(int starId)
@@ -350,6 +384,20 @@ namespace Evomelo
             var starUri = "pack://application:,,,/ressources/icon_star_empty.png";
             var starUri2 = "pack://application:,,,/ressources/icon_star_full.png";
 
+
+            // Data Side of Things
+            if (_population.individus[lineNumber - 1].fitness == (starId - (lineNumber - 1) * 5) + 1)
+            {
+                _population.individus[lineNumber - 1].fitness = 0; // Disabling rating
+            }
+            else
+            {
+                _population.individus[lineNumber - 1].fitness = (starId - (lineNumber - 1) * 5) + 1; // Notes de 1 à 5. 0 = pas assigné
+            }
+
+            Console.WriteLine(_population.individus[lineNumber - 1].fitness);
+
+            // Visual Side of Things
             if (GD.rectStars[starId].Name == "icon_star_empty")
             {
                 for (int n = lineNumber * 5 - 5; n < lineNumber * 5; n++)
@@ -365,7 +413,6 @@ namespace Evomelo
                         GD.rectStars[n].Name = "icon_star_empty";
                     }
                 }
-
             }
             else if (GD.rectStars[starId].Name == "icon_star_full")
             {
@@ -404,9 +451,12 @@ namespace Evomelo
         }
 
         // WORK IN PROGRESS
-        public void drawPreview(int _marginLeft, int _marginTop, int _individuId)
+        public void drawPreview(int _individuId)
         {
             Individu unIndividu = _population.individus[_individuId];
+
+            int _marginLeft = 32;
+            int _marginTop = 52 + (_individuId * 50);
 
             // Determines color 1 - 128
 
