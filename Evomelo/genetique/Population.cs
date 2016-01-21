@@ -137,6 +137,7 @@ namespace Evomelo.Genetique
 
                 individu = mutation(individu);
 
+                individu.fitness = 0;
                 newPop[i] = individu;
             }
 
@@ -155,6 +156,7 @@ namespace Evomelo.Genetique
                 if(_individus[i].fitness > elite.fitness)
                 {
                     elite = _individus[i];
+                    elite.fitness = 0;
                 }
             }
 
