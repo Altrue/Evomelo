@@ -13,6 +13,7 @@ namespace Evomelo.Genetique
         private int _nbNotes = 16;
         private double _tauxMut;
         private double _tauxSurvie = 2.5;
+        private Random _rnd;
 
         private Individu[] _individus;
 
@@ -20,12 +21,12 @@ namespace Evomelo.Genetique
         {
             _individus = new Individu[_nbIndividu];
             _tauxMut = 1 / _nbNotes;
-           Random rnd = new Random();
+            _rnd = new Random();
 
             for(int i = 0; i < _nbIndividu; i++)
             {
-                _individus[i] = new Individu(_nbNotes, rnd.Next(1,129));
-                _individus[i].generateRandomNotes(rnd);
+                _individus[i] = new Individu(_nbNotes, _rnd.Next(1,129));
+                _individus[i].generateRandomNotes(_rnd);
             }
         }
 
@@ -47,7 +48,7 @@ namespace Evomelo.Genetique
         {
             Individu newI = new Individu(_nbNotes);
             int[] tabNote = new int[_nbNotes];
-            int nbSeq = (int)(_nbNotes * new Random().NextDouble());
+            int nbSeq = (int)(_nbNotes * _rnd.NextDouble());
 
             for (int i = 0; i < _nbNotes; i++)
             {
@@ -78,12 +79,11 @@ namespace Evomelo.Genetique
         //fonction de mutation
         private Individu mutation(Individu i1)
         {
-            Random rand = new Random();
             for (int i = 0; i < _nbNotes; i++)
             {
-                if (rand.NextDouble() <= _tauxMut)
+                if (_rnd.NextDouble() <= _tauxMut)
                 {
-                    i1.notes[i] = rand.Next(0,127);
+                    i1.notes[i] = _rnd.Next(0,127);
                 }
             }
 
@@ -93,9 +93,8 @@ namespace Evomelo.Genetique
         //sélectionne un individu
         private Individu selection()
         {
-            Random rand = new Random();
-            int p1 = rand.Next(0, 10);
-            int p2 = rand.Next(0, 10);
+            int p1 = _rnd.Next(0, 10);
+            int p2 = _rnd.Next(0, 10);
             Individu individu;
 
             if(_individus[p1].fitness <= _individus[p2].fitness)
@@ -116,22 +115,21 @@ namespace Evomelo.Genetique
             Individu[] newPop = new Individu[_nbIndividu];
             Individu individu;
             Individu individu2;
-            Random rand = new Random();
             int i = 0;
 
             individu = selectElite();
-            if(individu != null)
+            if (individu != null)
             {
                 newPop[i] = individu;
                 i++;
             }
 
-            for(; i < _nbIndividu; i++)
+            for (; i < _nbIndividu; i++)
             {
                 individu = selection();
-                
+
                 //si cross
-                if (_tauxCross > rand.NextDouble())
+                if (_tauxCross > _rnd.NextDouble())
                 {
                     individu2 = selection();
                     individu = cross(individu, individu2);
