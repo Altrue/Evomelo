@@ -95,15 +95,17 @@ namespace Evomelo.Genetique
         {
             int p1 = _rnd.Next(0, 10);
             int p2 = _rnd.Next(0, 10);
-            Individu individu;
+            Individu individu = new Individu(_nbNotes);
 
             if(_individus[p1].fitness <= _individus[p2].fitness)
             {
-                individu = _individus[p2];
+                individu.notes = _individus[p2].notes;
+                individu.instrument = _individus[p2].instrument;
             }
             else
             {
-                individu = _individus[p1];
+                individu.notes = _individus[p1].notes;
+                individu.instrument = _individus[p1].instrument;
             }
 
             return individu;
@@ -113,25 +115,26 @@ namespace Evomelo.Genetique
         public void newGeneration()
         {
             Individu[] newPop = new Individu[_nbIndividu];
-            Individu individu;
-            Individu individu2;
             int i = 0;
 
-            individu = selectElite();
-            if (individu != null)
+            Individu eliteIndividu = selectElite();
+            if (eliteIndividu != null)
             {
+                Individu individu = new Individu(_nbNotes);
+                individu.instrument = eliteIndividu.instrument;
+                individu.notes = eliteIndividu.notes;
                 newPop[i] = individu;
                 i++;
             }
 
             for (; i < _nbIndividu; i++)
             {
-                individu = selection();
+                Individu individu = selection();
 
                 //si cross
                 if (_tauxCross > _rnd.NextDouble())
                 {
-                    individu2 = selection();
+                    Individu individu2 = selection();
                     individu = cross(individu, individu2);
                 }
 
@@ -155,8 +158,8 @@ namespace Evomelo.Genetique
                 sFitness = sFitness + _individus[i].fitness;
                 if(_individus[i].fitness > elite.fitness)
                 {
-                    elite = _individus[i];
-                    elite.fitness = 0;
+                    elite.instrument = _individus[i].instrument;
+                    elite.notes = _individus[i].notes;
                 }
             }
 
