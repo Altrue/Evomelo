@@ -35,11 +35,10 @@ namespace Evomelo
         public const int WINDOW_WIDTH = 450;
         public const int WINDOW_HEIGHT = 600;
         // - Variables
-        public static int coreNumber = 0;
+        public static int nb_rated = 0;
 
         // UI Elements
         // - Canvas
-        public static Canvas GraphCanvasCPU = new Canvas();
         public static Canvas MainCanvas = new Canvas();
         // - Brushes
 
@@ -49,11 +48,8 @@ namespace Evomelo
 
         // Data Storage
         // - Dictionaries
-        public static Dictionary<Int16, List<int>> CoreData = new Dictionary<Int16, List<int>>();
-        public static Dictionary<Int16, Polyline> CPUPolyLines = new Dictionary<Int16, Polyline>();
+
         // - Arrays
-        public static PerformanceCounter[] pcArrayCPU = new PerformanceCounter[17];
-        public static TextBlock[] tbArrayCPU = new TextBlock[32];
         public static Rectangle[] rectPlayIndividus = new Rectangle[10];
         public static Border[] borderIndividus = new Border[10];
         public static Rectangle[] rectStars = new Rectangle[50];
