@@ -23,9 +23,7 @@ namespace Evomelo
         private MediaPlayer _mplayer;
         private Boolean _isPlaying;
         private string _strFileName;
-        private int _nbFile = 0;
         private Population _population;
-        public Random testRand = new Random(); // A BOUGER
         public MainWindow()
         {
             InitializeComponent();
@@ -188,14 +186,14 @@ namespace Evomelo
         // Clic sur le bouton : on lance la création d'un fichier et on le joue
         private void PlayButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            CreateAndPlayMusic();
+            //TODO joué musique ou arreter
         }
 
         // Clic sur le bouton : on génère une nouvelle génération
         private void generationButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
             bool fit = true;
-            for(int i = 0; i < _population.individus.Length; i++)
+            for(int i = 0; i < _population.nbIndividu; i++)
             {
                 if(_population.individus[i].fitness == 0)
                 {
@@ -221,7 +219,7 @@ namespace Evomelo
                 //individus est désormais une nouvelle population d'individus
                 _population.newGeneration();
 
-                for (int n = 0; n < _population.individus.Length; n++)
+                for (int n = 0; n < _population.nbIndividu; n++)
                 {
                     drawPreview(n);
                 }
@@ -235,68 +233,6 @@ namespace Evomelo
             {
                 Console.WriteLine("Clic enregistré mais il ne fait rien !");
             }
-        }
-
-        // Méthode principale
-        private void CreateAndPlayMusic()
-        {
-            // s'il y a un fichier en cours de lecture on l'arrête 
-            if (_isPlaying)
-            {
-                _mplayer.Stop();
-                _mplayer.Close();
-                _isPlaying = false;
-            }
-            // Générateur aléatoire
-            Random rand = new Random();
-
-            // 1) Créer le fichier MIDI
-            // a. Créer un fichier et une piste audio ainsi que les informations de tempo
-            MIDISong song = new MIDISong();
-            song.AddTrack("Piste1");
-            song.SetTimeSignature(0, 4, 4);
-            song.SetTempo(0, 150);
-
-            // b. Choisir un instrument entre 1 et 128 
-            // Liste complète ici : http://fr.wikipedia.org/wiki/General_MIDI
-            int instrument = rand.Next(1, 129);
-            song.SetChannelInstrument(0, 0, instrument);
-
-            // c. Ajouter des notes
-            // Chaque note est comprise entre 0 et 127 (12 correspond au type de note, fixe ici à des 1/4)
-            // L'équivalence avec les notes / octaves est disponible ici : https://andymurkin.files.wordpress.com/2012/01/midi-int-midi-note-no-chart.jpg
-            // Ici 16 notes aléatoire entre 16 et 96 (pour éviter certaines notes trop aigues ou trop graves)
-            for (int i = 0; i < 16; i++)
-            {
-                int note = rand.Next(24, 96);
-                song.AddNote(0, 0, note, 12);
-            }
-
-            // d. Enregistrer le fichier .mid (lisible dans un lecteur externe par exemple)
-            // on prépare le flux de sortie
-            MemoryStream ms = new MemoryStream();
-            song.Save(ms);
-            ms.Seek(0, SeekOrigin.Begin);
-            byte[] src = ms.GetBuffer();
-            byte[] dst = new byte[src.Length];
-            for (int i = 0; i < src.Length; i++)
-            {
-                dst[i] = src[i];
-            }
-            ms.Close();
-            // et on écrit le fichier
-            _strFileName = "Fichier" + _nbFile + ".mid";
-            FileStream objWriter = File.Create(_strFileName);
-            objWriter.Write(dst, 0, dst.Length);
-            objWriter.Close();
-            objWriter.Dispose();
-            objWriter = null;
-
-            // 2) Jouer un fichier MIDI
-            _mplayer.Open(new Uri(_strFileName, UriKind.Relative));
-            _nbFile++;
-            _isPlaying = true;
-            _mplayer.Play();
         }
 
         // DragMove
@@ -387,7 +323,7 @@ namespace Evomelo
                 GD.nb_rated++;
             }
 
-            for (int n = 0; n < _population.individus.Length; n++)
+            for (int n = 0; n < _population.nbIndividu; n++)
             {
                 Console.WriteLine("Individu " + n + ", noté " + _population.individus[n].fitness);
             }
@@ -448,7 +384,7 @@ namespace Evomelo
 
             // Modification possible de l'apparence du boutton generation
 
-            if (GD.nb_rated == _population.individus.Length)
+            if (GD.nb_rated == _population.nbIndividu)
             {
                 GD.bt_Generation.Name = "button_generation";
                 GD.bt_Generation.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/button_generation.png")));
@@ -517,6 +453,69 @@ namespace Evomelo
                 Canvas.SetBottom(GD.rectPreviewArray[_individuId][n], (0));
                 Canvas.SetLeft(GD.rectPreviewArray[_individuId][n], (1 + n*8));
                 GD.canvasPreview[_individuId].Children.Add(GD.rectPreviewArray[_individuId][n]);
+            }
+        }
+
+        private void createMidiFiles()
+        {
+            stopMusic();
+            for(int i=0;i < _population.nbIndividu; i++)
+            {
+                MIDISong song = new MIDISong();
+                song.AddTrack("Piste " + i.ToString());
+                song.SetTimeSignature(0, 4, 4);
+                song.SetTempo(0, 150);
+                song.SetChannelInstrument(0, 0, _population.individus[i].instrument);
+                for(int x = 0; x < _population.nbNotes; x++)
+                {
+                    song.AddNote(0, 0, _population.individus[i].notes[x], 12);
+                }
+
+                // on prépare le flux de sortie
+                MemoryStream ms = new MemoryStream();
+                song.Save(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                byte[] src = ms.GetBuffer();
+                byte[] dst = new byte[src.Length];
+                for (int y = 0; y < src.Length; y++)
+                {
+                    dst[y] = src[y];
+                }
+                ms.Close();
+                // et on écrit le fichier
+                string strFileName = "Fichier" + i.ToString() + ".mid";
+                FileStream objWriter = File.Create(strFileName);
+                objWriter.Write(dst, 0, dst.Length);
+                objWriter.Close();
+                objWriter.Dispose();
+                objWriter = null;
+            }
+        }
+
+        private void deleteMidiFiles()
+        {
+            stopMusic();
+            var files = Directory.EnumerateFiles("./", "Fichier*.mid");
+            foreach (string file in files)
+            {
+                File.Delete(file);
+            }
+        }
+
+        private void playMusic(string strFileName)
+        {
+            _mplayer.Open(new Uri(strFileName, UriKind.Relative));
+            _isPlaying = true;
+            _mplayer.Play();
+        }
+
+        private void stopMusic()
+        {
+            if (_isPlaying)
+            {
+                _mplayer.Stop();
+                _mplayer.Close();
+                _isPlaying = false;
             }
         }
     }

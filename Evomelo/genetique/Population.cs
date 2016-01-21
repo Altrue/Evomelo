@@ -43,6 +43,22 @@ namespace Evomelo.Genetique
             }
         }
 
+        public int nbNotes
+        {
+            get
+            {
+                return _nbNotes;
+            }
+        }
+
+        public int nbIndividu
+        {
+            get
+            {
+                return _nbIndividu;
+            }
+        }
+
         //fonction de cross-over
         private Individu cross(Individu i1, Individu i2)
         {
