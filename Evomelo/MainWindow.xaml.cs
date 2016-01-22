@@ -1,4 +1,5 @@
 ﻿using Evomelo.Genetique;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,12 +23,10 @@ namespace Evomelo
 
         private MediaPlayer _mplayer;
         private Boolean _isPlaying;
-        private string _strFileName;
         private Population _population;
         public MainWindow()
         {
             InitializeComponent();
-
             //génération de la première population
             _population = new Population();
             createMidiFiles();
@@ -180,7 +179,7 @@ namespace Evomelo
             else
             {
                 int individuId = Array.IndexOf(GD.rectPlayIndividus, sender as Rectangle);
-                //TODO : play/pause et récupérer le nom du fichier a lire
+                playMusic("Fichier" + individuId.ToString() + ".mid");
             }
         }
 
@@ -456,7 +455,13 @@ namespace Evomelo
         private void createMidiFiles()
         {
             stopMusic();
-            for(int i=0;i < _population.nbIndividu; i++)
+
+            if (!Directory.Exists("./fichier"))
+            {
+                Directory.CreateDirectory("./fichier");
+            }
+
+            for (int i=0;i < _population.nbIndividu; i++)
             {
                 MIDISong song = new MIDISong();
                 song.AddTrack("Piste " + i.ToString());
@@ -480,7 +485,7 @@ namespace Evomelo
                 }
                 ms.Close();
                 // et on écrit le fichier
-                string strFileName = "Fichier" + i.ToString() + ".mid";
+                string strFileName = "./fichier/Fichier" + i.ToString() + ".mid";
                 FileStream objWriter = File.Create(strFileName);
                 objWriter.Write(dst, 0, dst.Length);
                 objWriter.Close();
@@ -492,11 +497,12 @@ namespace Evomelo
         private void deleteMidiFiles()
         {
             stopMusic();
-            var files = Directory.EnumerateFiles("./", "Fichier*.mid");
+            var files = Directory.EnumerateFiles("./fichier/", "Fichier*.mid");
             foreach (string file in files)
             {
                 File.Delete(file);
             }
+            Directory.Delete("./fichier");
         }
 
         private void playMusic(string strFileName)
@@ -519,8 +525,16 @@ namespace Evomelo
         // Clic sur le bouton : on lance la sauvegarde
         private void SaveButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            int individuId = Array.IndexOf(GD.rectPlayIndividus, sender as Rectangle);
-            
+            if (!Directory.Exists("./sauvegarde"))
+            {
+                Directory.CreateDirectory("./sauvegarde");
+            }
+            int individuId = Array.IndexOf(GD.rectSaveIndividus, sender as Rectangle);
+            DateTime date = DateTime.Now;
+            string dateString = date.ToString().Replace("/", "");
+            dateString = dateString.Replace(" ", "");
+            dateString = dateString.Replace(":", "");
+            File.Move("./fichier/Fichier" + individuId.ToString() +".mid", "./sauvegarde/sauvegarde" + dateString + ".mid");
         }
     }
 }
