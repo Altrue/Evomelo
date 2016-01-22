@@ -30,6 +30,7 @@ namespace Evomelo
 
             //génération de la première population
             _population = new Population();
+            createMidiFiles();
 
             // Initialisation graphique
             Width = GD.WINDOW_WIDTH;
@@ -160,33 +161,26 @@ namespace Evomelo
         // On efface les fichiers .mid que l'on avait créé à la fin du programme
         void MainWindow_Closed(object sender, EventArgs e)
         {
-            // s'il y a un fichier en cours de lecture on l'arrête 
-            if (_isPlaying)
-            {
-                _mplayer.Stop();
-                _mplayer.Close();
-                _isPlaying = false;
-            }
-            var files = Directory.EnumerateFiles("./", "Fichier*.mid");
-            foreach (string file in files)
-            {
-                File.Delete(file);
-            }
-
+            deleteMidiFiles();
         }
 
         // Lancé lorsque le fichier a fini sa lecture, pour le fermer proprement
         void mplayer_MediaEnded(object sender, EventArgs e)
         {
-            _mplayer.Stop();
-            _mplayer.Close();
-            _isPlaying = false;
+            stopMusic();
         }
 
         // Clic sur le bouton : on lance la création d'un fichier et on le joue
         private void PlayButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //TODO joué musique ou arreter
+            if (_isPlaying)
+            {
+                stopMusic();
+            }
+            else
+            {
+                //TODO : play/pause et récupérer le nom du fichier a lire
+            }
         }
 
         // Clic sur le bouton : on génère une nouvelle génération
@@ -218,6 +212,8 @@ namespace Evomelo
 
                 //individus est désormais une nouvelle population d'individus
                 _population.newGeneration();
+                deleteMidiFiles();
+                createMidiFiles();
 
                 for (int n = 0; n < _population.nbIndividu; n++)
                 {
