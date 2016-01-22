@@ -124,7 +124,7 @@ namespace Evomelo
                     GD.rectSaveIndividus[n].MouseLeftButtonDown += PlayButton_MouseDown;
                     GD.rectSaveIndividus[n].MouseEnter += Button_MouseEnter;
                     GD.rectSaveIndividus[n].MouseLeave += Button_MouseLeave;
-                    //GD.rectSaveIndividus[n].MouseLeftButtonDown += SaveButton_MouseDown; // <- TODO
+                    GD.rectSaveIndividus[n].MouseLeftButtonDown += SaveButton_MouseDown;
                     GD.rectSaveIndividus[n].Name = "icon_save";
                     Canvas.SetTop(GD.rectSaveIndividus[n], (55 + (n * 50)));
                     Canvas.SetRight(GD.rectSaveIndividus[n], (246));
@@ -179,6 +179,7 @@ namespace Evomelo
             }
             else
             {
+                int individuId = Array.IndexOf(GD.rectPlayIndividus, sender as Rectangle);
                 //TODO : play/pause et récupérer le nom du fichier a lire
             }
         }
@@ -513,6 +514,13 @@ namespace Evomelo
                 _mplayer.Close();
                 _isPlaying = false;
             }
+        }
+
+        // Clic sur le bouton : on lance la sauvegarde
+        private void SaveButton_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            int individuId = Array.IndexOf(GD.rectPlayIndividus, sender as Rectangle);
+            
         }
     }
 }
