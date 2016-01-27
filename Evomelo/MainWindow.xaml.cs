@@ -120,7 +120,6 @@ namespace Evomelo
                     GD.rectSaveIndividus[n].Width = 25;
                     GD.rectSaveIndividus[n].Height = 25;
                     GD.rectSaveIndividus[n].Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_save.png")));
-                    GD.rectSaveIndividus[n].MouseLeftButtonDown += PlayButton_MouseDown;
                     GD.rectSaveIndividus[n].MouseEnter += Button_MouseEnter;
                     GD.rectSaveIndividus[n].MouseLeave += Button_MouseLeave;
                     GD.rectSaveIndividus[n].MouseLeftButtonDown += SaveButton_MouseDown;
@@ -180,6 +179,8 @@ namespace Evomelo
             {
                 int individuId = Array.IndexOf(GD.rectPlayIndividus, sender as Rectangle);
                 playMusic("Fichier" + individuId.ToString() + ".mid");
+                GD.borderIndividus[individuId].Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
+                GD.canvasPreview[individuId].Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
             }
         }
 
@@ -509,7 +510,13 @@ namespace Evomelo
         {
             _mplayer.Open(new Uri(strFileName, UriKind.Relative));
             _isPlaying = true;
+            for (int n = 0; n < _population.nbIndividu; n++)
+            {
+                GD.rectPlayIndividus[n].Name = "icon_pause";
+                GD.rectPlayIndividus[n].Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_pause.png")));
+            }
             _mplayer.Play();
+
         }
 
         private void stopMusic()
@@ -519,6 +526,13 @@ namespace Evomelo
                 _mplayer.Stop();
                 _mplayer.Close();
                 _isPlaying = false;
+                for (int n = 0; n < _population.nbIndividu; n++)
+                {
+                    GD.rectPlayIndividus[n].Name = "icon_play";
+                    GD.rectPlayIndividus[n].Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_play.png")));
+                    GD.borderIndividus[n].Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x11, 0x11, 0x11));
+                    GD.canvasPreview[n].Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x11, 0x11, 0x11));
+                }
             }
         }
 
