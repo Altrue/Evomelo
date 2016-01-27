@@ -27,6 +27,7 @@ namespace Evomelo
         public MainWindow()
         {
             InitializeComponent();
+            GD.date_last_save = DateTime.Now;
             //génération de la première population
             _population = new Population();
             createMidiFiles();
@@ -219,6 +220,8 @@ namespace Evomelo
                 for (int n = 0; n < _population.nbIndividu; n++)
                 {
                     drawPreview(n);
+                    // Restoring save button visibility
+                    GD.rectSaveIndividus[n].Visibility = Visibility.Visible;
                 }
 
                 GD.bt_Generation.Name = "button_generation_err";
@@ -583,16 +586,27 @@ namespace Evomelo
         // Clic sur le bouton : on lance la sauvegarde
         private void SaveButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (!Directory.Exists("./sauvegarde"))
-            {
-                Directory.CreateDirectory("./sauvegarde");
-            }
-            int individuId = Array.IndexOf(GD.rectSaveIndividus, sender as Rectangle);
             DateTime date = DateTime.Now;
-            string dateString = date.ToString().Replace("/", "");
-            dateString = dateString.Replace(" ", "");
-            dateString = dateString.Replace(":", "");
-            File.Move("./fichier/Fichier" + individuId.ToString() +".mid", "./sauvegarde/sauvegarde" + dateString + ".mid");
+
+            // Let's wait at least two seconds before saving another file.
+            if ((date - GD.date_last_save).TotalSeconds > 1)
+            {
+                if (!Directory.Exists("./sauvegarde"))
+                {
+                    Directory.CreateDirectory("./sauvegarde");
+                }
+                int individuId = Array.IndexOf(GD.rectSaveIndividus, sender as Rectangle);
+                string dateString = date.ToString().Replace("/", "");
+                dateString = dateString.Replace(" ", "");
+                dateString = dateString.Replace(":", "");
+                File.Move("./fichier/Fichier" + individuId.ToString() + ".mid", "./sauvegarde/sauvegarde" + dateString + ".mid");
+
+                // Hide the button for now. Not needed anymore.
+                GD.rectSaveIndividus[individuId].Visibility = Visibility.Hidden;
+
+                // Save the last save datetime to prevent crashes.
+                GD.date_last_save = date;
+            }
         }
     }
 }

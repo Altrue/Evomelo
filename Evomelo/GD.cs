@@ -36,6 +36,7 @@ namespace Evomelo
         public const int WINDOW_HEIGHT = 600;
         // - Variables
         public static int nb_rated = 0;
+        public static DateTime date_last_save;
 
         // UI Elements
         // - Canvas
