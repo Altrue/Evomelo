@@ -223,7 +223,7 @@ namespace Evomelo
 
                 GD.bt_Generation.Name = "button_generation_err";
                 GD.bt_Generation.Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/button_generation_err.png")));
-
+                GD.nb_rated = 0;
                 Console.WriteLine("--- FIN NEW GENERATION ---");
             }
             else
@@ -403,12 +403,56 @@ namespace Evomelo
 
             // Determines color 1 - 128
 
-            int doubleInstrument = (unIndividu.instrument - 1) * 2;
+            int doubleInstrument = (unIndividu.instrument - 1) * 2; // 0 --> 254
             //int doubleInstrument = _individuId * 28; // pour tester la palette de couleurs
 
-            int valueRed = Math.Max(254 - doubleInstrument * 2, 0);
-            int valueGreen = (127 - Math.Abs(doubleInstrument - 127)) * 2;
-            int valueBlue = Math.Max(doubleInstrument - 127, 0) * 2;
+            // RVB default values
+            int valueRed = 254;
+            int valueGreen = 254;
+            int valueBlue = 254;
+
+            // 0 --> 42
+            if (doubleInstrument < 43)
+            {
+                valueRed = 254;
+                valueGreen = (doubleInstrument * 6) + 2;
+                valueBlue = 0;
+            }
+            // 43 --> 85
+            else if (doubleInstrument < 86)
+            {
+                valueRed = ((doubleInstrument - 43) * 6) + 2;
+                valueGreen = 254;
+                valueBlue = 0;
+            }
+            // 86 --> 127
+            else if (doubleInstrument < 128)
+            {
+                valueRed = 0;
+                valueGreen = 254;
+                valueBlue = ((doubleInstrument - 85) * 6) + 2;
+            }
+            // 128 --> 170
+            else if (doubleInstrument < 171)
+            {
+                valueRed = 0;
+                valueGreen = ((doubleInstrument - 128) * 6) + 2;
+                valueBlue = 254;
+            }
+            // 171 --> 212
+            else if (doubleInstrument < 213)
+            {
+                valueRed = ((doubleInstrument - 170) * 6) + 2;
+                valueGreen = 0;
+                valueBlue = 254;
+            }
+            // 213 --> 254
+            else {
+                valueRed = 254;
+                valueGreen = 0;
+                valueBlue = ((doubleInstrument - 212) * 6) + 2;
+            }
+            
 
             string valueRedHex = valueRed.ToString("X");
             if (valueRedHex.Length == 1)
