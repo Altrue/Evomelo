@@ -406,8 +406,8 @@ namespace Evomelo
 
             // Determines color 1 - 128
 
-            int doubleInstrument = (unIndividu.instrument - 1) * 2; // 0 --> 254
-            //int doubleInstrument = _individuId * 28; // pour tester la palette de couleurs
+            //int doubleInstrument = (unIndividu.instrument - 1) * 2; // 0 --> 254
+            int doubleInstrument = _individuId * 28; // pour tester la palette de couleurs
 
             // RVB default values
             int valueRed = 254;
@@ -424,7 +424,7 @@ namespace Evomelo
             // 43 --> 85
             else if (doubleInstrument < 86)
             {
-                valueRed = ((doubleInstrument - 43) * 6) + 2;
+                valueRed = 254 - (((doubleInstrument - 43) * 6) + 2);
                 valueGreen = 254;
                 valueBlue = 0;
             }
@@ -439,7 +439,7 @@ namespace Evomelo
             else if (doubleInstrument < 171)
             {
                 valueRed = 0;
-                valueGreen = ((doubleInstrument - 128) * 6) + 2;
+                valueGreen = 254 - (((doubleInstrument - 128) * 6) + 2);
                 valueBlue = 254;
             }
             // 171 --> 212
@@ -453,7 +453,7 @@ namespace Evomelo
             else {
                 valueRed = 254;
                 valueGreen = 0;
-                valueBlue = ((doubleInstrument - 212) * 6) + 2;
+                valueBlue = 254 - (((doubleInstrument - 212) * 6) + 2);
             }
             
 
