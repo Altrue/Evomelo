@@ -198,10 +198,9 @@ namespace Evomelo
                     break;
                 }
             }
-            //si tout les individus ont une fitness
-            if(fit == true)
+            //si tout les individus ont une fitness et si une musique n'est pas en cours.
+            if(fit == true && !_isPlaying)
             {
-
                 Console.WriteLine("--- DEBUT NEW GENERATION ---");
 
                 var starUri = "pack://application:,,,/ressources/icon_star_empty.png";
