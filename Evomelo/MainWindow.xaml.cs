@@ -167,6 +167,7 @@ namespace Evomelo
         void mplayer_MediaEnded(object sender, EventArgs e)
         {
             stopMusic();
+            Console.WriteLine("Fini !");
         }
 
         // Clic sur le bouton : on lance la création d'un fichier et on le joue
@@ -179,7 +180,7 @@ namespace Evomelo
             else
             {
                 int individuId = Array.IndexOf(GD.rectPlayIndividus, sender as Rectangle);
-                playMusic("Fichier" + individuId.ToString() + ".mid");
+                playMusic("./fichier/Fichier" + individuId.ToString() + ".mid");
                 GD.borderIndividus[individuId].Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
                 GD.canvasPreview[individuId].Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x22, 0x22, 0x22));
             }
@@ -556,6 +557,8 @@ namespace Evomelo
         private void playMusic(string strFileName)
         {
             _mplayer.Open(new Uri(strFileName, UriKind.Relative));
+            Console.WriteLine(strFileName);
+            Console.WriteLine(new Uri(strFileName, UriKind.Relative));
             _isPlaying = true;
             for (int n = 0; n < _population.nbIndividu; n++)
             {
@@ -563,7 +566,7 @@ namespace Evomelo
                 GD.rectPlayIndividus[n].Fill = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/ressources/icon_pause.png")));
             }
             _mplayer.Play();
-
+            Console.WriteLine("Lancé !");
         }
 
         private void stopMusic()
