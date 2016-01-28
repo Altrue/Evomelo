@@ -313,16 +313,25 @@ namespace Evomelo
 
 
             // Data Side of Things
+            if (_population.individus[lineNumber].fitness == 0)
+            {
+                GD.nb_rated++;
+            }
+            else if (_population.individus[lineNumber].fitness == fitnessDemande)
+            {
+                GD.nb_rated--;
+            }
+            // Else : Adjusting the rating means the number stays the same.
+
             if (_population.individus[lineNumber].fitness == fitnessDemande)
             {
                 _population.individus[lineNumber].fitness = 0; // Disabling rating
-                GD.nb_rated--;
             }
             else
             {
                 _population.individus[lineNumber].fitness = fitnessDemande; // Notes de 1 à 5. 0 = pas assigné
-                GD.nb_rated++;
             }
+
 
             for (int n = 0; n < _population.nbIndividu; n++)
             {
@@ -353,7 +362,7 @@ namespace Evomelo
                 for (int n = lineNumber * 5; n < lineNumber * 5 + 5; n++)
                 {
                     // Do we want to disable the rating? If we clicked on the 5th star (that is full), or if the next star is empty.
-                    if ((lineNumber * 5) == starId)
+                    if ((((lineNumber + 1) * 5) - 1) == starId)
                     {
                         GD.rectStars[n].Fill = new ImageBrush(new BitmapImage(new Uri(starUri)));
                         GD.rectStars[n].Name = "icon_star_empty";
@@ -384,7 +393,7 @@ namespace Evomelo
             }
 
             // Modification possible de l'apparence du boutton generation
-
+            Console.WriteLine(GD.nb_rated);
             if (GD.nb_rated == _population.nbIndividu)
             {
                 GD.bt_Generation.Name = "button_generation";
@@ -407,8 +416,8 @@ namespace Evomelo
 
             // Determines color 1 - 128
 
-            //int doubleInstrument = (unIndividu.instrument - 1) * 2; // 0 --> 254
-            int doubleInstrument = _individuId * 28; // pour tester la palette de couleurs
+            int doubleInstrument = (unIndividu.instrument - 1) * 2; // 0 --> 254
+            //int doubleInstrument = _individuId * 28; // pour tester la palette de couleurs
 
             // RVB default values
             int valueRed = 254;
@@ -492,7 +501,7 @@ namespace Evomelo
                 GD.rectPreviewArray[_individuId][n] = new Rectangle();
 
                 GD.rectPreviewArray[_individuId][n].Width = 7;
-                GD.rectPreviewArray[_individuId][n].Height = 31 * ((double)unIndividu.notes[n]/127); // HEIGHT DEPENDANT ON NOTE TONE
+                GD.rectPreviewArray[_individuId][n].Height = 31 * (((double)unIndividu.notes[n] - 24)/ 71); // HEIGHT DEPENDANT ON NOTE TONE
                 GD.rectPreviewArray[_individuId][n].Fill = (Brush)converter.ConvertFromString("#FF" + valueRedHex + valueGreenHex + valueBlueHex);
 
                 Canvas.SetBottom(GD.rectPreviewArray[_individuId][n], (0));
