@@ -62,7 +62,7 @@ namespace Evomelo.Genetique
         {
             for(int i = 0; i < _notes.Length; i++)
             {
-                _notes[i] = rnd.Next(0, 128);
+                _notes[i] = rnd.Next(24, 96);
             }
         }
     }
